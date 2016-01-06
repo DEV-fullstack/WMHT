@@ -1,0 +1,1234 @@
+﻿@{
+    Layout = "~/Views/Shared/_layout.cshtml";
+}
+<!DOCTYPE HTML>
+<html>
+<head>
+</head>
+
+<body>
+    <!--CDATA Request-->
+    @*<input type="hidden" id="countryId" />*@
+    <input type="hidden" id="date-pick-start" />
+    <input type="hidden" id="date-pick-end" />
+    <!--End-CDATA Request-->
+    <!-- TOP AREA -->
+    <div class="top-area show-onload">
+        <div class="bg-holder full">
+            <div class="bg-front bg-front-mob-rel">
+                <div class="container">
+                    <div class="search-tabs search-tabs-bg search-tabs-abs-bottom">
+                        <div class="tabbable">
+                            <ul class="nav nav-tabs" id="myTab">
+                                <li class="active">
+                                    <a href="#tab-1" data-toggle="tab"><i class="fa fa-building-o"></i> <span>Hotels</span></a>
+                                </li>
+                                <li>
+                                    <a href="#tab-2" data-toggle="tab"><i class="fa fa-plane"></i> <span>Flights</span></a>
+                                </li>
+                                <li>
+                                    <a href="#tab-3" data-toggle="tab"><i class="fa fa-home"></i> <span>Rentals</span></a>
+                                </li>
+                                <li>
+                                    <a href="#tab-4" data-toggle="tab"><i class="fa fa-car"></i> <span>Cars</span></a>
+                                </li>
+                                <li>
+                                    <a href="#tab-5" data-toggle="tab"><i class="fa fa-bolt"></i> <span>Activities</span></a>
+                                </li>
+                            </ul>
+                            <div class="tab-content">
+                                <div class="tab-pane fade in active" id="tab-1">
+                                    <h2>Search and Save on Hotels</h2>
+
+                                    <!--Search and Save on kHotels <form>-->
+                                    @using (Html.BeginForm("Hotels_Search_Results", "Home", FormMethod.Post))
+                                    {
+                                    <input type="hidden" id="cityCode" name="iCityCode" />
+                                    <input type="hidden" id="sumAdult" name="sumAdult" />
+                                    <input type="hidden" id="sumChild" name="sumChild" />
+                                    <input type="hidden" id="sumRoom" name="sumRoom" />
+                                    <input type="hidden" id="ageChild1" name="ageChild1" />
+                                    <input type="hidden" id="ageChild2" name="ageChild2" />
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group form-group-lg form-group-icon-left">
+                                                <i class="fa fa-map-marker input-icon"></i>
+                                                <label>Where are you going?</label>
+                                                <input class="typeahead form-control"  id="search-country" name="search-country" required placeholder="City, Airport, Point of Interest or U.S. Zip Code" type="text" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="input-daterange" data-date-format="M d, D">
+                                                <div class="row">
+                                                    <div class="col-md-3">
+                                                        <div class="form-group form-group-lg form-group-icon-left">
+                                                            <i class="fa fa-calendar input-icon input-icon-highlight"></i>
+                                                            <label>Check-in</label>
+                                                            <input class="form-control" name="start" type="text" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="form-group form-group-lg form-group-icon-left">
+                                                            <i class="fa fa-calendar input-icon input-icon-highlight"></i>
+                                                            <label>Check-out</label>
+                                                            <input class="form-control" name="end" type="text" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="form-group form-group-lg form-group-icon-left">
+                                                            <i class="fa fa-flag input-icon"></i>
+                                                            <label>Hotel name</label>
+                                                            <input class="typeahead form-control" name="hotel_name" id="hotel_name" placeholder="Hotel Name" value="" onclick="remove_error();" onfocus="remove_error();" onchange="remove_error();" onblur="remove_error();" type="text" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="form-group form-group-lg form-group-icon-left">
+                                                            <i class="fa fa-star input-icon"></i>
+                                                            <label>Stars</label>
+                                                            <select class="form-control" name="stars">
+                                                                <option value="">Select</option>
+                                                                <option value="1">1</option>
+                                                                <option value="2">1.5</option>
+                                                                <option value="3">2</option>
+                                                                <option value="4">2.5</option>
+                                                                <option value="5">3</option>
+                                                                <option value="6">3.5</option>
+                                                                <option value="7">4</option>
+                                                                <option value="8">4.5</option>
+                                                                <option value="9">5</option>
+                                                                <option value="10">5.5</option>
+                                                                <option value="11">6</option>
+
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--DIV guests-->
+                                    <div id="roomdiv" style="border-top: 1px solid #ED8323;padding-top:5px;margin-top:-14px" class="room_container">
+                                        <div id="rooms0" style="background-color: palegoldenrod">
+                                            <div class="row">
+                                                <div class="form-group col-md-2 col-sm-3 col-xs-12 text-center">
+                                                    <label>Room</label>
+                                                    <span class="badge" style="padding:11px 15px;border-radius:20px">1</span>
+                                                </div>
+
+                                                <div class="form-group col-md-2 col-sm-3 col-xs-6">
+
+                                                    <label>Adults</label>
+                                                    <div class="btn-group" data-toggle="buttons">
+                                                        <label class="btn btn-primary" style="border-top-left-radius:2px; border-bottom-left-radius:2px;" onclick="deduct_count(0)">
+                                                            <span>-</span>
+                                                        </label>
+                                                        <label class="btn button_white">
+                                                            <span id="adultCount0">2</span>
+                                                            <input type="hidden" id="adultCounth0" name="adults[]" value="2">
+                                                        </label>
+                                                        <label class="btn btn-primary" style="border-top-right-radius:2px; border-bottom-right-radius:2px;" onclick="add_count(0)">
+                                                            <span>+</span>
+                                                        </label>
+                                                    </div>
+
+                                                </div>
+                                                <div class="form-group col-md-2 col-sm-3 col-xs-6">
+
+                                                    <label>Children</label>
+                                                    <div class="btn-group" data-toggle="buttons">
+                                                        <label class="btn btn btn-primary" style="border-top-left-radius:2px; border-bottom-left-radius:2px;" onclick="deduct_child_count(0)">
+                                                            <span>-</span>
+                                                        </label>
+                                                        <label class="btn button_white">
+                                                            <span id="childCount0">0</span>
+                                                            <input type="hidden" id="childCounth0" name="childs[]" value="0">
+                                                        </label>
+                                                        <label class="btn btn btn-primary" style="border-top-right-radius:2px; border-bottom-right-radius:2px;" onclick="add_child_count(0)">
+                                                            <span>+</span>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div id="age1_room0" class="age0 hide form-group col-md-2 col-sm-2 col-xs-6">
+
+                                                    <label>Age</label>
+                                                    <select id="select_age1_room0 "name="age[0][]" class="form-control" onchange="($('#ageChild1').val($(this).val()))">
+                                                        <option value="0">Select</option>
+                                                        <option value="3">3</option>
+                                                        <option value="4">4</option>
+                                                        <option value="5">5</option>
+                                                        <option value="6">6</option>
+                                                        <option value="7">7</option>
+                                                        <option value="8">8</option>
+                                                        <option value="9">9</option>
+                                                        <option value="10">10</option>
+                                                    </select>
+
+                                                </div>
+                                                <div id="age2_room0" class="age0 hide form-group col-md-2 col-sm-2 col-xs-6">
+
+                                                    <label>Age</label>
+                                                    <select id="select_age2_room0" name="age[0][]" class="form-control" onchange="($('#ageChild1').val($(this).val()))">
+                                                       <option value="0">Select</option>
+                                                       <option value="3">3</option>
+                                                       <option value="4">4</option>
+                                                       <option value="5">5</option>
+                                                       <option value="6">6</option>
+                                                       <option value="7">7</option>
+                                                       <option value="8">8</option>
+                                                       <option value="9">9</option>
+                                                       <option value="10">10</option> 
+                                                    </select>
+
+                                                </div>
+
+                                                <!--<div id="extrabed_room0"  class="row extrabed_room">
+
+                                                    <div class="form-group col-md-4 col-sm-3 col-xs-6 pull-right">
+                                                        <label>Cots</label><br>
+                                                        <div id="period-group" class="btn-group" data-toggle="buttons">
+                                                            <label class="btn button_white">
+                                                              <input type="radio" value="Yes" onchange="setextrabed(this.value,0)" > Yes
+                                                            </label>
+                                                            <label class="btn button_white active">
+                                                              <input type="radio" value="No" onchange="setextrabed(this.value,0)"  checked> No
+                                                            </label>
+                                                        </div>
+                                                        <input type="hidden" id="extrabed_val_room0" name="extrabed[]" value="No">
+                                                    </div>
+                                                </div>-->
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12" style="margin-bottom:5px">
+                                            <a id="add_link" href="javascript:void(0)" onclick="add_rooms();">Add More Rooms &nbsp;<i class="fa fa-plus"></i></a>
+                                            <a style="display: none;" id="remove_link" href="javascript:void(0)" onclick="remove_rooms();">&nbsp;&nbsp;Remove Rooms &nbsp;<i class="fa fa-minus"></i></a>
+                                        </div>
+                                    </div>
+                                    <!--End- div guests-->
+                                    <button class="btn btn-primary btn-lg" type="submit" onclick="_sumAdult_Chiuld()">Search for Hotels</button>
+                                    }
+                                    <!--End- </form> kHotel search-->
+                                </div>
+                                <div class="tab-pane fade" id="tab-2">
+                                    <h2>Search for Cheap Flights</h2>
+                                    <form>
+                                        <div class="tabbable">
+                                            <ul class="nav nav-pills nav-sm nav-no-br mb10" id="flightChooseTab">
+                                                <li class="active">
+                                                    <a href="#flight-search-1" data-toggle="tab">Round Trip</a>
+                                                </li>
+                                                <li>
+                                                    <a href="#flight-search-2" data-toggle="tab">One Way</a>
+                                                </li>
+                                            </ul>
+                                            <div class="tab-content">
+                                                <div class="tab-pane fade in active" id="flight-search-1">
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <div class="row">
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group form-group-lg form-group-icon-left">
+                                                                        <i class="fa fa-map-marker input-icon"></i>
+                                                                        <label>From</label>
+                                                                        <input class="typeahead form-control" placeholder="City, Airport, U.S. Zip" type="text" />
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group form-group-lg form-group-icon-left">
+                                                                        <i class="fa fa-map-marker input-icon"></i>
+                                                                        <label>To</label>
+                                                                        <input class="typeahead form-control" placeholder="City, Airport, U.S. Zip" type="text" />
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="input-daterange" data-date-format="M d, D">
+                                                                <div class="row">
+                                                                    <div class="col-md-4">
+                                                                        <div class="form-group form-group-lg form-group-icon-left">
+                                                                            <i class="fa fa-calendar input-icon input-icon-highlight"></i>
+                                                                            <label>Departing</label>
+                                                                            <input class="form-control" name="start" type="text" />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-4">
+                                                                        <div class="form-group form-group-lg form-group-icon-left">
+                                                                            <i class="fa fa-calendar input-icon input-icon-highlight"></i>
+                                                                            <label>Returning</label>
+                                                                            <input class="form-control" name="end" type="text" />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-4">
+                                                                        <div class="form-group form-group-lg form-group-select-plus">
+                                                                            <label>Passngers</label>
+                                                                            <div class="btn-group btn-group-select-num" data-toggle="buttons">
+                                                                                <label class="btn btn-primary active">
+                                                                                    <input type="radio" name="options" />1
+                                                                                </label>
+                                                                                <label class="btn btn-primary">
+                                                                                    <input type="radio" name="options" />2
+                                                                                </label>
+                                                                                <label class="btn btn-primary">
+                                                                                    <input type="radio" name="options" />3
+                                                                                </label>
+                                                                                <label class="btn btn-primary">
+                                                                                    <input type="radio" name="options" />3+
+                                                                                </label>
+                                                                            </div>
+                                                                            <select class="form-control hidden">
+                                                                                <option>1</option>
+                                                                                <option>2</option>
+                                                                                <option>3</option>
+                                                                                <option selected="selected">4</option>
+                                                                                <option>5</option>
+                                                                                <option>6</option>
+                                                                                <option>7</option>
+                                                                                <option>8</option>
+                                                                                <option>9</option>
+                                                                                <option>10</option>
+                                                                                <option>11</option>
+                                                                                <option>12</option>
+                                                                                <option>13</option>
+                                                                                <option>14</option>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="tab-pane fade" id="flight-search-2">
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <div class="row">
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group form-group-lg form-group-icon-left">
+                                                                        <i class="fa fa-map-marker input-icon"></i>
+                                                                        <label>From</label>
+                                                                        <input class="typeahead form-control" placeholder="City, Airport, U.S. Zip" type="text" />
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group form-group-lg form-group-icon-left">
+                                                                        <i class="fa fa-map-marker input-icon"></i>
+                                                                        <label>To</label>
+                                                                        <input class="typeahead form-control" placeholder="City, Airport, U.S. Zip" type="text" />
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="input-daterange" data-date-format="M d, D">
+                                                                <div class="row">
+                                                                    <div class="col-md-4">
+                                                                        <div class="form-group form-group-lg form-group-icon-left">
+                                                                            <i class="fa fa-calendar input-icon input-icon-highlight"></i>
+                                                                            <label>Departing</label>
+                                                                            <input class="date-pick form-control" data-date-format="M d, D" type="text" />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-4">
+                                                                        <div class="form-group form-group-lg form-group-select-plus">
+                                                                            <label>Passngers</label>
+                                                                            <div class="btn-group btn-group-select-num" data-toggle="buttons">
+                                                                                <label class="btn btn-primary active">
+                                                                                    <input type="radio" name="options" />1
+                                                                                </label>
+                                                                                <label class="btn btn-primary">
+                                                                                    <input type="radio" name="options" />2
+                                                                                </label>
+                                                                                <label class="btn btn-primary">
+                                                                                    <input type="radio" name="options" />3
+                                                                                </label>
+                                                                                <label class="btn btn-primary">
+                                                                                    <input type="radio" name="options" />3+
+                                                                                </label>
+                                                                            </div>
+                                                                            <select class="form-control hidden">
+                                                                                <option>1</option>
+                                                                                <option>2</option>
+                                                                                <option>3</option>
+                                                                                <option selected="selected">4</option>
+                                                                                <option>5</option>
+                                                                                <option>6</option>
+                                                                                <option>7</option>
+                                                                                <option>8</option>
+                                                                                <option>9</option>
+                                                                                <option>10</option>
+                                                                                <option>11</option>
+                                                                                <option>12</option>
+                                                                                <option>13</option>
+                                                                                <option>14</option>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <button class="btn btn-primary btn-lg" type="submit">Search for Flights</button>
+                                    </form>
+                                </div>
+                                <div class="tab-pane fade" id="tab-3">
+                                    <h2>Find Your Perfect Home</h2>
+                                    <form>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="form-group form-group-lg form-group-icon-left">
+                                                    <i class="fa fa-map-marker input-icon"></i>
+                                                    <label>Where are you going?</label>
+                                                    <input class="typeahead form-control" placeholder="City, Airport, Point of Interest or U.S. Zip Code" type="text" />
+                                                </div>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <div class="input-daterange" data-date-format="M d, D">
+                                                    <div class="row">
+                                                        <div class="col-md-3">
+                                                            <div class="form-group form-group-lg form-group-icon-left">
+                                                                <i class="fa fa-calendar input-icon input-icon-highlight"></i>
+                                                                <label>Check-in</label>
+                                                                <input class="form-control" name="start" type="text" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <div class="form-group form-group-lg form-group-icon-left">
+                                                                <i class="fa fa-calendar input-icon input-icon-highlight"></i>
+                                                                <label>Check-out</label>
+                                                                <input class="form-control" name="end" type="text" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <div class="form-group form-group-lg form-group-select-plus">
+                                                                <label>Rooms</label>
+                                                                <div class="btn-group btn-group-select-num" data-toggle="buttons">
+                                                                    <label class="btn btn-primary active">
+                                                                        <input type="radio" name="options" />1
+                                                                    </label>
+                                                                    <label class="btn btn-primary">
+                                                                        <input type="radio" name="options" />2
+                                                                    </label>
+                                                                    <label class="btn btn-primary">
+                                                                        <input type="radio" name="options" />3
+                                                                    </label>
+                                                                    <label class="btn btn-primary">
+                                                                        <input type="radio" name="options" />3+
+                                                                    </label>
+                                                                </div>
+                                                                <select class="form-control hidden">
+                                                                    <option>1</option>
+                                                                    <option>2</option>
+                                                                    <option>3</option>
+                                                                    <option selected="selected">4</option>
+                                                                    <option>5</option>
+                                                                    <option>6</option>
+                                                                    <option>7</option>
+                                                                    <option>8</option>
+                                                                    <option>9</option>
+                                                                    <option>10</option>
+                                                                    <option>11</option>
+                                                                    <option>12</option>
+                                                                    <option>13</option>
+                                                                    <option>14</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <div class="form-group form-group-lg form-group-select-plus">
+                                                                <label>Guests</label>
+                                                                <div class="btn-group btn-group-select-num" data-toggle="buttons">
+                                                                    <label class="btn btn-primary active">
+                                                                        <input type="radio" name="options" />1
+                                                                    </label>
+                                                                    <label class="btn btn-primary">
+                                                                        <input type="radio" name="options" />2
+                                                                    </label>
+                                                                    <label class="btn btn-primary">
+                                                                        <input type="radio" name="options" />3
+                                                                    </label>
+                                                                    <label class="btn btn-primary">
+                                                                        <input type="radio" name="options" />3+
+                                                                    </label>
+                                                                </div>
+                                                                <select class="form-control hidden">
+                                                                    <option>1</option>
+                                                                    <option>2</option>
+                                                                    <option>3</option>
+                                                                    <option selected="selected">4</option>
+                                                                    <option>5</option>
+                                                                    <option>6</option>
+                                                                    <option>7</option>
+                                                                    <option>8</option>
+                                                                    <option>9</option>
+                                                                    <option>10</option>
+                                                                    <option>11</option>
+                                                                    <option>12</option>
+                                                                    <option>13</option>
+                                                                    <option>14</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <button class="btn btn-primary btn-lg" type="submit">Search for Vacation Rentals</button>
+                                    </form>
+                                </div>
+                                <div class="tab-pane fade" id="tab-4">
+                                    <h2>Search for Cheap Rental Cars</h2>
+                                    <form>
+                                        <div class="row">
+                                            <div class="col-md-8">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group form-group-lg form-group-icon-left">
+                                                            <i class="fa fa-map-marker input-icon"></i>
+                                                            <label>Pick-up Location</label>
+                                                            <input class="typeahead form-control" placeholder="City, Airport, U.S. Zip" type="text" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group form-group-lg form-group-icon-left">
+                                                            <i class="fa fa-map-marker input-icon"></i>
+                                                            <label>Drop-off Location</label>
+                                                            <input class="typeahead form-control" placeholder="City, Airport, U.S. Zip" type="text" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="input-daterange" data-date-format="M d, D">
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <div class="form-group form-group-lg form-group-icon-left">
+                                                                <i class="fa fa-calendar input-icon input-icon-highlight"></i>
+                                                                <label>Pick-up Date</label>
+                                                                <input class="form-control" name="start" type="text" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="form-group form-group-lg form-group-icon-left">
+                                                                <i class="fa fa-calendar input-icon input-icon-highlight"></i>
+                                                                <label>Drop-ff Date</label>
+                                                                <input class="form-control" name="end" type="text" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <button class="btn btn-primary btn-lg" type="submit">Search for Rental Cars</button>
+                                    </form>
+                                </div>
+                                <div class="tab-pane fade" id="tab-5">
+                                    <h2>Search for Activities</h2>
+                                    <form>
+                                        <div class="row">
+                                            <div class="col-md-8">
+                                                <div class="form-group form-group-lg form-group-icon-left">
+                                                    <i class="fa fa-map-marker input-icon"></i>
+                                                    <label>Where are you going?</label>
+                                                    <input class="typeahead form-control" placeholder="City, Airport, Point of Interest or U.S. Zip Code" type="text" />
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="input-daterange" data-date-format="M d, D">
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <div class="form-group form-group-lg form-group-icon-left">
+                                                                <i class="fa fa-calendar input-icon input-icon-highlight"></i>
+                                                                <label>From</label>
+                                                                <input class="form-control" name="start" type="text" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="form-group form-group-lg form-group-icon-left">
+                                                                <i class="fa fa-calendar input-icon input-icon-highlight"></i>
+                                                                <label>To</label>
+                                                                <input class="form-control" name="end" type="text" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <button class="btn btn-primary btn-lg" type="submit">Search for Activities</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="owl-carousel owl-slider owl-carousel-area visible-lg" id="owl-carousel-slider">
+                <div class="bg-holder full">
+                    <div class="bg-mask"></div>
+                    <div class="bg-img" style="background-image:url(/Content/img/2048x1365.png);"></div>
+                    <div class="bg-content">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-5 col-md-offset-7">
+                                    <!-- START TESTIMONIAL -->
+                                    <div class="testimonial text-white mt50">
+                                        <div class="testimonial-inner">
+                                            <blockquote>
+                                                <p>Vitae leo conubia cras est fermentum litora blandit massa tempor per donec justo libero duis</p>
+                                            </blockquote>
+                                        </div>
+                                        <div class="testimonial-author">
+                                            <img src="~/Content/img/50x50.png" alt="Image Alternative text" title="Sevenly Shirts - June 2012  2" />
+                                            <p class="testimonial-author-name">John Doe</p>
+                                            <cite>on <a class="text-udl" href="#">Waldorf Astoria</a> hotel in Paris</cite>
+                                        </div>
+                                    </div>
+                                    <!-- END TESTIMONIAL -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-holder full">
+                    <div class="bg-mask"></div>
+                    <div class="bg-img" style="background-image:url(/Content/img/2048x2048.png);"></div>
+                    <div class="bg-content">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-5 col-md-offset-7">
+                                    <!-- START TESTIMONIAL -->
+                                    <div class="testimonial text-white mt50">
+                                        <div class="testimonial-inner">
+                                            <blockquote>
+                                                <p>Vehicula velit a duis class augue curae accumsan tempor semper id integer adipiscing mattis conubia</p>
+                                            </blockquote>
+                                        </div>
+                                        <div class="testimonial-author">
+                                            <img src="~/Content/img/50x50.png" alt="Image Alternative text" title="Flare lens flare" />
+                                            <p class="testimonial-author-name">Blake Abraham</p>
+                                            <cite>on <a class="text-udl" href="#">Wellington</a> hotel in Budapest</cite>
+                                        </div>
+                                    </div>
+                                    <!-- END TESTIMONIAL -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-holder full">
+                    <div class="bg-mask"></div>
+                    <div class="bg-img" style="background-image:url(/Content/img/2048x1365.png);"></div>
+                    <div class="bg-content">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-5 col-md-offset-7">
+                                    <!-- START TESTIMONIAL -->
+                                    <div class="testimonial text-white mt50">
+                                        <div class="testimonial-inner">
+                                            <blockquote>
+                                                <p>Interdum consectetur nam id eu suspendisse ipsum in magna curae metus laoreet pulvinar habitant gravida</p>
+                                            </blockquote>
+                                        </div>
+                                        <div class="testimonial-author">
+                                            <img src="~/Content/img/50x50.png" alt="Image Alternative text" title="Afro" />
+                                            <p class="testimonial-author-name">Dylan Taylor</p>
+                                            <cite>on <a class="text-udl" href="#">Holiday</a> hotel in Las Vegas</cite>
+                                        </div>
+                                    </div>
+                                    <!-- END TESTIMONIAL -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-img hidden-lg" style="background-image:url(/Content/img/2048x1365.png);"></div>
+            <div class="bg-mask hidden-lg"></div>
+        </div>
+    </div>
+    <!-- END TOP AREA  -->
+    <div class="container">
+        <div class="row row-wrap">
+            <div class="col-md-4">
+                <div class="thumb text-center">
+                    <header class="thumb-header">
+                        <a class="hover-img curved" href="#">
+                            <img src="~/Content/img/800x600.png" alt="Image Alternative text" title="a dreamy jump" />
+                            <h5 class="hover-title-top-left hover-hold">Summer Escapes</h5>
+                        </a>
+                    </header>
+                    <div class="thumb-caption text-center">
+                        <p class="thumb-desc">Pretium dolor luctus dictumst elementum nec tristique proin duis vivamus</p>
+                        <a class="btn btn-default btn-ghost mt10" href="#">Find More <i class="fa fa-angle-right"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="thumb text-center">
+                    <header class="thumb-header">
+                        <a class="hover-img curved" href="#">
+                            <img src="~/Content/img/800x600.png" alt="Image Alternative text" title="The Big Showoff-Take 2" />
+                            <h5 class="hover-title-top-left hover-hold">Wild Jorneys</h5>
+                        </a>
+                    </header>
+                    <div class="thumb-caption text-center">
+                        <p class="thumb-desc">Metus hac malesuada id ultricies risus lacinia enim dui dui</p>
+                        <a class="btn btn-default btn-ghost mt10" href="#">Find More <i class="fa fa-angle-right"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="thumb text-center">
+                    <header class="thumb-header">
+                        <a class="hover-img curved" href="#">
+                            <img src="~/Content/img/800x600.png" alt="Image Alternative text" title="Bridge" />
+                            <h5 class="hover-title-top-left hover-hold">Romantic Weekends</h5>
+                        </a>
+                    </header>
+                    <div class="thumb-caption text-center">
+                        <p class="thumb-desc">Sodales mus vitae id class rhoncus facilisis malesuada adipiscing sollicitudin</p>
+                        <a class="btn btn-default btn-ghost mt10" href="#">Find More <i class="fa fa-angle-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="gap gap-small"></div>
+    </div>
+    <div class="bg-darken">
+        <div class="container">
+            <div class="gap"></div>
+            <h2>Discover New Cities</h2>
+            <div class="row row-wrap">
+                <div class="col-md-3">
+                    <div class="thumb">
+                        <header class="thumb-header">
+                            <a class="hover-img curved" href="#">
+                                <img src="~/Content/img/800x600.png" alt="Image Alternative text" title="196_365" />
+                            </a>
+                        </header>
+                        <div class="img-left">
+                            <img src="~/Content/img/flags/32/fr.png" alt="Image Alternative text" title="Image Title" />
+                        </div>
+                        <div class="thumb-caption">
+                            <h4 class="thumb-title">
+                                <a class="text-darken" href="#">Paris</a>
+                            </h4>
+                            <div class="thumb-caption">
+                                <p class="thumb-desc">Sollicitudin mattis purus facilisis mattis eleifend</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="thumb">
+                        <header class="thumb-header">
+                            <a class="hover-img curved" href="#">
+                                <img src="~/Content/img/800x600.png" alt="Image Alternative text" title="people on the beach" />
+                            </a>
+                        </header>
+                        <div class="img-left">
+                            <img src="~/Content/img/flags/32/gr.png" alt="Image Alternative text" title="Image Title" />
+                        </div>
+                        <div class="thumb-caption">
+                            <h4 class="thumb-title">
+                                <a class="text-darken" href="#">Crete</a>
+                            </h4>
+                            <div class="thumb-caption">
+                                <p class="thumb-desc">Lectus elit facilisis hendrerit arcu litora</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="thumb">
+                        <header class="thumb-header">
+                            <a class="hover-img curved" href="#">
+                                <img src="~/Content/img/800x600.png" alt="Image Alternative text" title="El inevitable paso del tiempo" />
+                            </a>
+                        </header>
+                        <div class="img-left">
+                            <img src="~/Content/img/flags/32/hu.png" alt="Image Alternative text" title="Image Title" />
+                        </div>
+                        <div class="thumb-caption">
+                            <h4 class="thumb-title">
+                                <a class="text-darken" href="#">Budapest</a>
+                            </h4>
+                            <div class="thumb-caption">
+                                <p class="thumb-desc">Pharetra a sem sagittis non proin</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="thumb">
+                        <header class="thumb-header">
+                            <a class="hover-img curved" href="#">
+                                <img src="~/Content/img/800x600.png" alt="Image Alternative text" title="Upper Lake in New York Central Park" />
+                            </a>
+                        </header>
+                        <div class="img-left">
+                            <img src="~/Content/img/flags/32/us.png" alt="Image Alternative text" title="Image Title" />
+                        </div>
+                        <div class="thumb-caption">
+                            <h4 class="thumb-title">
+                                <a class="text-darken" href="#">New York</a>
+                            </h4>
+                            <div class="thumb-caption">
+                                <p class="thumb-desc">Lacinia neque nec per consectetur pharetra</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="gap gap-small"></div>
+            <h2>Last Minute Deals</h2>
+            <div class="row row-wrap">
+                <div class="col-md-3">
+                    <div class="thumb">
+                        <header class="thumb-header">
+                            <a class="hover-img" href="#">
+                                <img src="~/Content/img/800x600.png" alt="Image Alternative text" title="hotel PORTO BAY SERRA GOLF living room" />
+                                <h5 class="hover-title-center">Book Now</h5>
+                            </a>
+                        </header>
+                        <div class="thumb-caption">
+                            <ul class="icon-group text-tiny text-color">
+                                <li>
+                                    <i class="fa fa-star"></i>
+                                </li>
+                                <li>
+                                    <i class="fa fa-star"></i>
+                                </li>
+                                <li>
+                                    <i class="fa fa-star"></i>
+                                </li>
+                                <li>
+                                    <i class="fa fa-star"></i>
+                                </li>
+                                <li>
+                                    <i class="fa fa-star-half-empty"></i>
+                                </li>
+                            </ul>
+                            <h5 class="thumb-title">
+                                <a class="text-darken" href="#">Waldorf Astoria New York</a>
+                            </h5>
+                            <p class="mb0">
+                                <small><i class="fa fa-map-marker"></i> Flushing, NY (LaGuardia Airport (LGA))</small>
+                            </p>
+                            <p class="mb0 text-darken">
+                                <span class="text-lg lh1em text-color">$269</span>
+                                <small> avg/night</small>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="thumb">
+                        <header class="thumb-header">
+                            <a class="hover-img" href="#">
+                                <img src="~/Content/img/800x600.png" alt="Image Alternative text" title="hotel PORTO BAY RIO INTERNACIONAL rooftop pool" />
+                                <h5 class="hover-title-center">Book Now</h5>
+                            </a>
+                        </header>
+                        <div class="thumb-caption">
+                            <ul class="icon-group text-tiny text-color">
+                                <li>
+                                    <i class="fa fa-star"></i>
+                                </li>
+                                <li>
+                                    <i class="fa fa-star"></i>
+                                </li>
+                                <li>
+                                    <i class="fa fa-star"></i>
+                                </li>
+                                <li>
+                                    <i class="fa fa-star"></i>
+                                </li>
+                                <li>
+                                    <i class="fa fa-star-half-empty"></i>
+                                </li>
+                            </ul>
+                            <h5 class="thumb-title">
+                                <a class="text-darken" href="#">Warwick New York Hotel</a>
+                            </h5>
+                            <p class="mb0">
+                                <small><i class="fa fa-map-marker"></i> New York, NY (Midtown East)</small>
+                            </p>
+                            <p class="mb0 text-darken">
+                                <span class="text-lg lh1em text-color">$176</span>
+                                <small> avg/night</small>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="thumb">
+                        <header class="thumb-header">
+                            <a class="hover-img" href="#">
+                                <img src="~/Content/img/800x600.png" alt="Image Alternative text" title="hotel PORTO BAY RIO INTERNACIONAL de luxe" />
+                                <h5 class="hover-title-center">Book Now</h5>
+                            </a>
+                        </header>
+                        <div class="thumb-caption">
+                            <ul class="icon-group text-tiny text-color">
+                                <li>
+                                    <i class="fa fa-star"></i>
+                                </li>
+                                <li>
+                                    <i class="fa fa-star"></i>
+                                </li>
+                                <li>
+                                    <i class="fa fa-star"></i>
+                                </li>
+                                <li>
+                                    <i class="fa fa-star"></i>
+                                </li>
+                                <li>
+                                    <i class="fa fa-star"></i>
+                                </li>
+                            </ul>
+                            <h5 class="thumb-title">
+                                <a class="text-darken" href="#">The London NYC</a>
+                            </h5>
+                            <p class="mb0">
+                                <small><i class="fa fa-map-marker"></i> East Elmhurst, NY (LaGuardia Airport (LGA))</small>
+                            </p>
+                            <p class="mb0 text-darken">
+                                <span class="text-lg lh1em text-color">$299</span>
+                                <small> avg/night</small>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="thumb">
+                        <header class="thumb-header">
+                            <a class="hover-img" href="#">
+                                <img src="~/Content/img/800x600.png" alt="Image Alternative text" title="The pool" />
+                                <h5 class="hover-title-center">Book Now</h5>
+                            </a>
+                        </header>
+                        <div class="thumb-caption">
+                            <ul class="icon-group text-tiny text-color">
+                                <li>
+                                    <i class="fa fa-star"></i>
+                                </li>
+                                <li>
+                                    <i class="fa fa-star"></i>
+                                </li>
+                                <li>
+                                    <i class="fa fa-star"></i>
+                                </li>
+                                <li>
+                                    <i class="fa fa-star"></i>
+                                </li>
+                                <li>
+                                    <i class="fa fa-star"></i>
+                                </li>
+                            </ul>
+                            <h5 class="thumb-title">
+                                <a class="text-darken" href="#">Grand Hyatt New York</a>
+                            </h5>
+                            <p class="mb0">
+                                <small><i class="fa fa-map-marker"></i> Queens (LaGuardia Airport (LGA))</small>
+                            </p>
+                            <p class="mb0 text-darken">
+                                <span class="text-lg lh1em text-color">$343</span>
+                                <small> avg/night</small>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="gap gap-small"></div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="gap gap-small"></div>
+        <div class="gap gap-small"></div>
+        <div class="row row-wrap" data-gutter="60">
+            <div class="col-md-4">
+                <div class="thumb">
+                    <i class="fa fa-dollar box-icon-left round box-icon-normal box-icon-black animate-icon-top-to-bottom"></i>
+                    <div class="thumb-caption">
+                        <h5 class="thumb-title">Best Price Guarantee</h5>
+                        <p class="thumb-desc">Integer magnis leo eros condimentum parturient lectus quam enim viverra scelerisque tortor natoque sodales ac</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="thumb">
+                    <i class="fa fa-thumbs-o-up box-icon-left round box-icon-normal box-icon-black animate-icon-top-to-bottom"></i>
+                    <div class="thumb-caption">
+                        <h5 class="thumb-title">Best Travel Agent</h5>
+                        <p class="thumb-desc">Scelerisque etiam at adipiscing ante class vulputate felis purus eleifend luctus suspendisse luctus lacinia suspendisse</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="thumb">
+                    <i class="fa fa-briefcase box-icon-left round box-icon-normal box-icon-black animate-icon-top-to-bottom"></i>
+                    <div class="thumb-caption">
+                        <h5 class="thumb-title">Combine & Save</h5>
+                        <p class="thumb-desc">Consequat gravida tellus vivamus at urna fames dictumst cursus fusce varius felis imperdiet curae magna</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
+
+
+<script>
+
+    //function search_key() {
+    //    $('#search-country').keyup(function () {
+    //        var textValue = $(this).val();
+    //        search_country(textValue);
+    //    });
+    //}
+    //function search_country(textValue) {
+    //    $.ajax({
+    //        url: "/Home/CountryLookup?textValue=" + textValue,
+    //        type: "GET",
+    //        contentType: "application/json; charset=utf-8",
+    //        dataType: "json",
+    //        success: function (result) {
+    //            var str = '';
+    //            $.each(result, function (key, item) {
+    //            });
+    //        },
+    //        error: function (errormessage) {
+    //            alert(errormessage.responseText);
+    //        }
+    //    });
+
+    //    return false;
+    //}
+    var rooms = 0;
+    function add_count(room) {
+        var currentValue = parseInt($("#adultCount" + room).text(), 10);
+        if (currentValue < 5) {
+            var newValue = currentValue + 1;
+            $("#adultCount" + room).html(newValue);
+            $("#adultCounth" + room).val(newValue);
+        }
+        if (currentValue > 1) {
+            $("#extrabed_room" + room).addClass('hide');
+        }
+    }
+    function deduct_count(room) {
+        var currentValue = parseInt($("#adultCount" + room).text(), 10);
+        if (currentValue > 1) {
+            var newValue = currentValue - 1;
+            $("#adultCount" + room).html(newValue);
+            $("#adultCounth" + room).val(newValue);
+        }
+        if (currentValue < 4) {
+            $("#extrabed_room" + room).removeClass('hide');
+        }
+    }
+    function add_child_count(room) {
+        var currentValue = parseInt($("#childCount" + room).text(), 10);
+        if (currentValue < 2) {
+            var newValue = currentValue + 1;
+            $("#childCount" + room).html(newValue);
+            $("#childCounth" + room).val(newValue);
+        }
+        childChange(room);
+    }
+    function deduct_child_count(room) {
+        var currentValue = parseInt($("#childCount" + room).text(), 10);
+        if (currentValue > 0) {
+            var newValue = currentValue - 1;
+            $("#childCount" + room).html(newValue);
+            $("#childCounth" + room).val(newValue);
+        }
+        childChange(room);
+    }
+    function add_rooms() {
+        if (rooms < 2) {
+            rooms++;
+            //var label=rooms+1;
+            $('#roomdiv').append('<div id="rooms' + rooms + '" >' +
+            '<div class="row">' +
+            '<div class="form-group col-md-2 col-sm-3 col-xs-12 text-center" style="padding-top:0px;">' +
+                        '<label>Room</label><span class="badge" style="padding:11px 15px;border-radius:20px;background-color: #999999">' + (rooms + 1) + '</span>' +
+                    '</div>' +
+                    '<div class="rows">' +
+                    '<div id="adults"' + rooms + '" class="form-group col-md-2 col-sm-3 col-xs-6">' +
+                            '<label>Adults</label>' +
+                            '<div class="btn-group" data-toggle="buttons">' +
+                               '<label class="btn btn-primary" style="border-top-left-radius:2px; border-bottom-left-radius:2px;" onclick="deduct_count(' + rooms + ')">' +
+                                  '<span>-</span>' +
+                               '</label>' +
+                               '<label class="btn button_white">' +
+                               '<span id="adultCount' + rooms + '" >2</span>' +
+                               '<input type="hidden" id="adultCounth' + rooms + '" name="adults[]"   value="2" />' +
+                               '</label>' +
+                               '<label class="btn btn-primary" style="border-top-right-radius:2px; border-bottom-right-radius:2px;" onclick="add_count(' + rooms + ')">' +
+                                  '<span>+</span>' +
+                              '</label>' +
+                            '</div>' +
+                    '</div>' +
+                    '<div id="children' + rooms + '" class="form-group col-md-2 col-sm-3 col-xs-6">' +
+                            '<label>Children</label>' +
+                            '<div class="btn-group" data-toggle="buttons">' +
+                               '<label class="btn btn-primary" style="border-top-left-radius:2px; border-bottom-left-radius:2px;" onclick="deduct_child_count(' + rooms + ')">' +
+                                  '<span>-</span>' +
+                               '</label>' +
+                               '<label class="btn button_white">' +
+                               '<span id="childCount' + rooms + '" >0</span>' +
+                                '<input type="hidden" id="childCounth' + rooms + '" name="childs[]"   value="0" />' +
+                               '</label>' +
+                               '<label class="btn btn-primary" style="border-top-right-radius:2px; border-bottom-right-radius:2px;" onclick="add_child_count(' + rooms + ')">' +
+                                  '<span>+</span>' +
+                               '</label>' +
+                            '</div>' +
+                    '</div>' +
+                    '<div id="age1_room' + rooms + '" class="age' + rooms + ' hide form-group col-md-2 col-sm-3 col-xs-6">' +
+
+                            '<label>Age</label>' +
+                            '<select name="age[' + rooms + '][]" class="form-control">' +
+                            '<option value="0">0</option>' +
+                            '<option value="1">1</option>' +
+                            '<option value="2">2</option>' +
+                            '<option value="3">3</option>' +
+                            '<option value="4">4</option>' +
+                            '<option value="5">5</option>' +
+                            '<option value="6">6</option>' +
+                            '<option value="7">7</option>' +
+                            '<option value="8">8</option>' +
+                            '<option value="9">9</option>' +
+                            '<option value="10">10</option>' +
+                            '</select>' +
+                    '</div>' +
+                    '<div id="age2_room' + rooms + '" class="age' + rooms + ' hide form-group col-md-2 col-sm-3 col-xs-6">' +
+                    '<label>Age</label>' +
+                            '<select name="age[' + rooms + '][]"  class="form-control">' +
+                            '<option value="0">0</option>' +
+                            '<option value="1">1</option>' +
+                            '<option value="2">2</option>' +
+                            '<option value="3">3</option>' +
+                            '<option value="4">4</option>' +
+                            '<option value="5">5</option>' +
+                            '<option value="6">6</option>' +
+                            '<option value="7">7</option>' +
+                            '<option value="8">8</option>' +
+                            '<option value="9">9</option>' +
+                            '<option value="10">10</option>' +
+                            '</select>' +
+                    '</div>' +
+                    '</div>' +
+                    /*'<div class="row extrabed_room" id="extrabed_room'+rooms+'">'+
+                    '<div class="form-group col-md-4 col-sm-3 col-xs-6 pull-right">'+
+                    '<label>Cots</label><br>'+
+                    '<div id="period-group" class="btn-group" data-toggle="buttons">'+
+                    '<label class="btn button_white">'+
+                    '<input type="radio" onClick="setextrabed(this.value,'+rooms+')" value="Yes" > Yes'+
+                    '</label>'+
+                    '<label class="btn button_white active">'+
+                    '<input type="radio" onClick="setextrabed(this.value,'+rooms+')" value="No"  checked> No'+
+                    '</label>'+
+                    '</div>'+
+                    '<input type="hidden" id="extrabed_val_room'+rooms+'" name="extrabed[]" value="No">'+
+                    '</div>'+
+                    '</div>'+*/
+                    '</div>' +
+                    '</div>');
+
+            if (rooms > 0) {
+                $('#remove_link').show();
+            }
+            if (rooms == 2) {
+                $('#add_link').hide();
+            }
+            $roomval = parseInt($('#room_count').val());
+            $roomval = $roomval + 1;
+            $('#room_count').val($roomval);
+
+        }
+
+    }
+
+    function remove_rooms() {
+        if (rooms > 0) {
+
+            $('#rooms' + rooms).remove();
+            rooms--;
+            if (rooms == 0) {
+                $('#remove_link').hide();
+            }
+            $roomval = parseInt($('#room_count').val());
+            $roomval = $roomval - 1;
+            $('#room_count').val($roomval);
+        }
+        if (rooms != 2) {
+
+            $('#add_link').show();
+
+        }
+    }
+
+    function childChange(room) {
+        var currentValue = parseInt($("#childCount" + room).text(), 10);
+
+        if (currentValue == 0) {
+            $('.age' + room).addClass('hide');
+        }
+        if (currentValue == 1) {
+
+            $('.age' + room).addClass('hide');
+            $('#age1_room' + room).removeClass('hide');
+        }
+        else if (currentValue == 2) {
+            $('.age' + room).addClass('hide');
+            $('#age1_room' + room).removeClass('hide');
+            $('#age2_room' + room).removeClass('hide');
+        }
+
+    }
+
+    function setextrabed(val, room) {
+
+        $('#extrabed_val_room' + room).val(val);
+    }
+    //Sum Adult&Chiuld
+    function _sumAdult_Chiuld(){
+        //Sum Adult
+        var adultCounth0 =  parseInt(($('#adultCounth0').length > 0)? $('#adultCounth0').val() : 0);
+        var adultCounth1 = parseInt(($('#adultCounth1').length > 0) ? $('#adultCounth1').val() : 0);
+        var adultCounth2 = parseInt(($('#adultCounth2').length > 0) ? $('#adultCounth2').val() : 0);
+        adultCounth0 += adultCounth1 + adultCounth2;
+        $('#sumAdult').val(adultCounth0);
+        //Sum Chiuld
+        var childCounth0 = parseInt(($('#childCounth0').length > 0) ? $('#childCounth0').val() : 0);
+        var childCounth1 = parseInt(($('#childCounth1').length > 0) ? $('#childCounth1').val() : 0);
+        var childCounth2 = parseInt(($('#childCounth2').length > 0) ? $('#childCounth2').val() : 0);
+        childCounth0 += childCounth1 + childCounth2;
+        $('#sumChild').val(childCounth0);
+        //Sum Room
+        var childCounth0 = parseInt(($('#childCounth0').length > 0) ? 1 : 0);
+        var childCounth1 = parseInt(($('#childCounth1').length > 0) ? 1: 0);
+        var childCounth2 = parseInt(($('#childCounth2').length > 0) ? 1 : 0);
+        childCounth0 += childCounth1 + childCounth2;
+        $('#sumRoom').val(childCounth0);
+        $("#select_age1_room0 option:selected").val();
+        
+    }
+    //function umAdult_Chiuld() {
+    //    $('#select_age1_room0').change(function () {
+    //        var selectVal = $('#select_age1_room0 :selected').text();
+    //        alert(selectVal);
+    //    });
+    //}
+
+</script>
