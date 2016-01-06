@@ -140,8 +140,8 @@ namespace BanDiDau.Controllers
         public ActionResult Hotels_Search_Results(int? iCityCode,int? iHotelCode, DateTime? start, DateTime? end, int? sumAdult, int? sumChild, int? sumRoom, int? ageChild1, int? ageChild2)
         {
             string exs;
-            //try
-            //{
+            try
+            {
                 XmlDocument soapEnvelopeXml = CreateSoapEnvelopeHotelSearchGeo_Id(iCityCode, iHotelCode, start, end, sumAdult, sumChild, sumRoom, ageChild1, ageChild2);
                 List<Hotel_Result_Geo> hotel_Result_Geo = hotelGeo(soapEnvelopeXml);
                 ViewBag.hotel_Result = hotel_Result_Geo.DistinctBy(a => a.hotelCode);
@@ -153,12 +153,12 @@ namespace BanDiDau.Controllers
                 ViewBag.ageChild1 = ageChild1;
                 ViewBag.ageChild2 = ageChild2;
                 return View();
-            //}
-            //catch (Exception ex)
-            //{
-            //    exs = ex.Message;
-            //    return RedirectToAction("Index", "Home");
-            //}
+            }
+            catch (Exception ex)
+            {
+                exs = ex.Message;
+                return RedirectToAction("Index", "Home");
+            }
         }
         #endregion
         #region -----------Medthods--------
