@@ -1,4 +1,4 @@
-﻿
+﻿ @ViewBag.start
 <div class="container">
             <ul class="breadcrumb">
                 <li><a href="index.html">Home</a>
@@ -296,15 +296,7 @@
                         @foreach(var item in  ViewBag.hotel_Result)
                         {
                         <li>
-                            <a class="booking-item" href="/hotel-details?id=@item.hotelSearchCode&price=@item.price
-                                                                            &iHotelCode=@item.hotelCode
-                                                                            &start=ViewBag.start
-                                                                            &end=ViewBag.end
-                                                                            &sumAdult=ViewBag.sumAdult
-                                                                            &sumChild=ViewBag.sumChild
-                                                                            &sumRoom=ViewBag.sumRoom
-                                                                            &ageChild1=ViewBag.ageChild1
-                                                                            &ageChild2=ViewBag.ageChild2">
+                            <a class="booking-item" href="/hotel-details?id=@item.hotelSearchCode&price=@item.price&iHotelCode=@item.hotelCode&start=@ViewBag.start&end=@ViewBag.end&sumAdult=@ViewBag.sumAdult&sumChild=@ViewBag.sumChild&sumRoom=@ViewBag.sumRoom&ageChild1=@ViewBag.ageChild1&ageChild2=@ViewBag.ageChild2">
                                 <div class="row">
                                     <div class="col-md-3">
                                         <div class="booking-item-img-wrap">

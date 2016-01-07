@@ -47,7 +47,7 @@ namespace BanDiDau.Controllers
         /// </summary>
         /// <param name="searchHotelCode">searchHotelCode(Ma cua khach san)</param>
         /// <returns></returns>
-        [OutputCache(Duration =600,VaryByParam ="price")]
+        [OutputCache(Duration = 60, VaryByParam = "price")]
         public ActionResult Hotel_Details(string id, float? price, int? iHotelCode, DateTime? start, DateTime? end, int? sumAdult, int? sumChild, int? sumRoom, int? ageChild1, int? ageChild2)
         {
             try
@@ -73,12 +73,12 @@ namespace BanDiDau.Controllers
                 {
                     hotel_Result.Add(new Hotel_Result_Info
                     {
-                        name = hotel.Element("HotelName").Value,
+                        name = hotel.Element("HotelName") == null ? "" : hotel.Element("HotelName").Value,
                         address = hotel.Element("Address").Value,
                         fax = hotel.Element("Fax").Value,
                         phone = hotel.Element("Phone").Value,
                         category = (hotel.Element("Category").Value),
-                        description = hotel.Element("Description").Value,
+                        description = hotel.Element("Description") == null ? "" : hotel.Element("Description").Value,
                         price = (price ?? 0),
                         pictureDescription = tempPictureDescription
                         //location = hotel.Element("Location").Value,
@@ -94,9 +94,16 @@ namespace BanDiDau.Controllers
                 #endregion
                 ViewBag.hotel_Info_Result = hotel_Result;
                 //method get all room of hotel
-                XmlDocument soapEnvelopeXml2 = CreateSoapEnvelopeHotelSearchGeo_Id(0,iHotelCode, start, end, sumAdult, sumChild, sumRoom, ageChild1, ageChild2);
+                XmlDocument soapEnvelopeXml2 = CreateSoapEnvelopeHotelSearchGeo_Id(0, iHotelCode, start, end, sumAdult, sumChild, sumRoom, ageChild1, ageChild2);
                 List<Hotel_Result_Geo> hotel_Result_Geo = hotelGeo(soapEnvelopeXml2);
                 ViewBag.hotel_listRoom_Result = hotel_Result_Geo;
+                ViewBag.start = start;
+                ViewBag.end = end;
+                ViewBag.sumAdult = sumAdult;
+                ViewBag.sumChild = sumChild;
+                ViewBag.sumRoom = sumRoom;
+                ViewBag.ageChild1 = ageChild1;
+                ViewBag.ageChild2 = ageChild2;
                 return View();
             }
             catch (Exception)
@@ -136,8 +143,8 @@ namespace BanDiDau.Controllers
         /// <param name="ageChild1"> Age-Child1(So tuoi tre thu nhat)</param>
         /// <param name="ageChild2"> Age-Child2(So tuoi tre thu hai)</param>
         /// <returns></returns>
-       // [OutputCache(Duration = 600, VaryByParam = "iCityCode;starts;ends;sumAdult;sumChild;sumRoom;ageChild1;ageChild2")]
-        public ActionResult Hotels_Search_Results(int? iCityCode,int? iHotelCode, DateTime? start, DateTime? end, int? sumAdult, int? sumChild, int? sumRoom, int? ageChild1, int? ageChild2)
+        //[OutputCache(Duration = 600, VaryByParam = "iCityCode;starts;ends;sumAdult;sumChild;sumRoom;ageChild1;ageChild2")]
+        public ActionResult Hotels_Search_Results(int? iCityCode, int? iHotelCode, DateTime? start, DateTime? end, int? sumAdult, int? sumChild, int? sumRoom, int? ageChild1, int? ageChild2)
         {
             string exs;
             try
@@ -145,8 +152,10 @@ namespace BanDiDau.Controllers
                 XmlDocument soapEnvelopeXml = CreateSoapEnvelopeHotelSearchGeo_Id(iCityCode, iHotelCode, start, end, sumAdult, sumChild, sumRoom, ageChild1, ageChild2);
                 List<Hotel_Result_Geo> hotel_Result_Geo = hotelGeo(soapEnvelopeXml);
                 ViewBag.hotel_Result = hotel_Result_Geo.DistinctBy(a => a.hotelCode);
-                ViewBag.start = start;
-                ViewBag.end = end;
+                string strDayStart = (start != null ? start.Value.ToString("yyyy-MM-dd") : DateTime.Now.ToString("yyyy-MM-dd"));
+                string strDayEnd = (end != null ? end.Value.ToString("yyyy-MM-dd") : DateTime.Now.AddDays(1).ToString("yyyy-MM-dd"));
+                ViewBag.start = strDayStart;
+                ViewBag.end = strDayEnd;
                 ViewBag.sumAdult = sumAdult;
                 ViewBag.sumChild = sumChild;
                 ViewBag.sumRoom = sumRoom;
@@ -162,20 +171,15 @@ namespace BanDiDau.Controllers
         }
         #endregion
         #region -----------Medthods--------
-        private static string Header_Request(bool hotelInfo)
+        /// <summary>
+        /// Header_Request
+        /// </summary>
+        /// <param name="strOperation">Operation Name (Header) ex:HOTEL_INFO_REQUEST</param>
+        /// <param name="strRequestType">Request Types ex:11</param>
+        /// <returns></returns>
+        private static string Header_Request(string strOperation, string strRequestType)
         {
-            string strOperation = "";
-            string strRequestType = "";
-            if (hotelInfo == true)
-            {
-                strOperation = "<Operation>HOTEL_INFO_REQUEST</Operation>";
-                strRequestType = " <requestType>61</requestType>";
-            }
-            else
-            {
-                strOperation = "<Operation>HOTEL_SEARCH_REQUEST</Operation>";
-                strRequestType = " <requestType>11</requestType>";
-            }
+           
             string xml = @"<?xml version='1.0' encoding='utf-8'?>
             <soap:Envelope xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"" xmlns:soap=""http://schemas.xmlsoap.org/soap/envelope/"">
             <soap:Body>
@@ -193,10 +197,54 @@ namespace BanDiDau.Controllers
 	        </Header>";
             return xml;
         }
+        /// <summary>
+        /// BOOKING_INSERT_REQUEST
+        /// </summary>
+        /// <param name="searchHotelCode"></param>
+        /// <returns></returns>
+        private static XmlDocument CreateSoapEnvelopeBookHotel(string searchHotelCode)
+        {
+            XmlDocument soapEnvelop = new XmlDocument();
+            string strOperation = "<Operation>BOOKING_INSERT_REQUEST</Operation>";
+            string strRequestType = " <requestType>2</requestType>";
+            string xmlHeader = Header_Request(strOperation, strRequestType);
+            string xml = xmlHeader + @"
+	      <Main>
+		<AgentReference>Test AgRef</AgentReference>
+		<HotelSearchCode>70043/215/0</HotelSearchCode>
+		<ArrivalDate>2016-03-07</ArrivalDate>
+		<Nights>3</Nights>
+		<NoAlternativeHotel>1</NoAlternativeHotel>
+		<Leader LeaderPersonID= '1'/>
+        <Rooms>
+            <RoomType Adults = '2'>
+                 <Room RoomID = '2'>
+                      <PersonName PersonID = '1'> JOHN DOE MR.</ PersonName>
+                           <PersonName PersonID ='2'> JAYNE DOE MRS.</PersonName>
+                            </Room>
+                        </RoomType>
+                    </Rooms>
+                    <Preferences>
+                        <LateArrival > 19:20 </LateArrival>
+                           <AdjoiningRooms > 1 </AdjoiningRooms>
+                           <ConnectingRooms > 1 </ConnectingRooms>
+                       </Preferences>
+                       <Remark> Test Remark </Remark>
+                      </ Main>
+                     </Root>]]>
+           </xmlRequest>
+            </MakeRequest>
+           </soap:Body>
+           </soap:Envelope>";
+            soapEnvelop.LoadXml(xml);
+            return soapEnvelop;
+        }
         private static XmlDocument CreateSoapEnvelopeSearchHotelInfo(string searchHotelCode)
         {
             XmlDocument soapEnvelop = new XmlDocument();
-            string xmlHeader = Header_Request(true);
+            string strOperation = "<Operation>HOTEL_INFO_REQUEST</Operation>";
+            string strRequestType = " <requestType>61</requestType>";
+            string xmlHeader = Header_Request(strOperation, strRequestType);
             string xml = xmlHeader + @"
 	       <Main>
 		        <HotelSearchCode>" + searchHotelCode + @"</HotelSearchCode>
@@ -217,7 +265,9 @@ namespace BanDiDau.Controllers
         private static XmlDocument CreateSoapEnvelopeSearchHotelId(string hotelCode)
         {
             XmlDocument soapEnvelop = new XmlDocument();
-            string xmlHeader = Header_Request(true);
+            string strOperation = "<Operation>HOTEL_INFO_REQUEST</Operation>";
+            string strRequestType = " <requestType>61</requestType>";
+            string xmlHeader = Header_Request(strOperation, strRequestType);
             string xml = xmlHeader + @"
 	       Main>
 		<SortOrder>0</SortOrder>
@@ -253,17 +303,19 @@ namespace BanDiDau.Controllers
             string strDayEnd = (ends != null ? ends.Value.ToString("yyyy-MM-dd") : DateTime.Now.AddDays(1).ToString("yyyy-MM-dd"));
             int iNights = ends.Value.Day - starts.Value.Day;
             XmlDocument soapEnvelop = new XmlDocument();
-            string xmlHeader = Header_Request(false);
-            iCityCode = (iCityCode??0);
+            string strOperation = "<Operation>HOTEL_INFO_REQUEST</Operation>";
+            string strRequestType = " <requestType>11</requestType>";
+            string xmlHeader = Header_Request(strOperation, strRequestType);
+            iCityCode = (iCityCode ?? 0);
             iHotelCode = (iHotelCode ?? 0);
             string strHotelCode = "";
             string strCityCode = "";
-            if (iHotelCode !=0 )
+            if (iHotelCode != 0)
             {
                 strHotelCode =
                    @"<Hotels >
                          <HotelId > " + iHotelCode + @" </HotelId >
-                      </Hotels >";
+                     </Hotels >";
             }
             if (iCityCode != 0)
             {
@@ -282,7 +334,7 @@ namespace BanDiDau.Controllers
 		        </FilterRoomBasises>
                 <Apartments>false</Apartments>" +
                 strHotelCode +
-                strCityCode+@"
+                strCityCode + @"
 		        <ArrivalDate>" + strDayStart + @"</ArrivalDate>
 		        <Nights>" + iNights + @"</Nights>
 		        <Rooms>
@@ -340,14 +392,16 @@ namespace BanDiDau.Controllers
             {
                 hotel_Result.Add(new Hotel_Result_Geo
                 {
-                    name = hotel.Element("HotelName").Value,
+                    name = hotel.Element("HotelName") == null ? "" : hotel.Element("HotelName").Value,
                     hotelSearchCode = hotel.Element("HotelSearchCode").Value,
-                   // cityCode= int.Parse(hotel.Element("CityCode").Value),
+                    // cityCode= int.Parse(hotel.Element("CityCode").Value),
                     hotelCode = int.Parse(hotel.Element("HotelCode").Value),
                     thumbnail = hotel.Element("Thumbnail").Value,
+                    description = hotel.Element("Description") == null ? "" : hotel.Element("Description").Value,
                     price = float.Parse(hotel.Element("TotalPrice").Value),
                     category = (hotel.Element("Category").Value),
                     location = hotel.Element("Location").Value,
+                    roomType = hotel.Element("RoomType").Value,
                     currency = hotel.Element("Currency").Value,
                     cxDeadline = hotel.Element("CxlDeadline").Value != "" ? hotel.Element("CxlDeadline").Value : "",
                     reviewCount = hotel.Element("TripAdvisor").Element("ReviewCount").Value != "" ? int.Parse(hotel.Element("TripAdvisor").Element("ReviewCount").Value) : 0,
