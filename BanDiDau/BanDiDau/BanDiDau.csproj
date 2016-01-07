@@ -1876,7 +1876,6 @@
     <Content Include="Views\Home\Flight_Ppayment_Registered_Card.cshtml" />
     <Content Include="Views\Home\Flight_Payment_Unregistered.cshtml" />
     <Content Include="Views\Home\Flight_Payment.cshtml" />
-    <Content Include="Views\Shared\_BookingItemHeader.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
