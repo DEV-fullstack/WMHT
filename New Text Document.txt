@@ -1,0 +1,6 @@
+Agency:1521345
+User:TRIPGLOBALXML
+Password:XMLTRIPGLOBAL
+http://xml.qa.goglobal.travel/
+https://trip.global/
+
