@@ -1,0 +1,164 @@
+﻿<div class="box-info-payment enable">
+
+    <div class="box-book-title">
+        <h3>Payment Options</h3>
+        <span class="arrow-city"></span>
+    </div>
+    <div class="box-book-conten">
+        <div class="box-bank">
+            <div class="box-bank-img">
+                <div class="form-group">
+                    <div class="checkbox">
+                        <label>
+                            <input type="radio" name="paymaent" value="1" checked="checked"> ATM DOMESTIC CARDS - ISSUED BY DOMESTIC BANKS
+                        </label>
+                    </div>
+                    <ul>
+                        @for (int i = 1; i < 25; i++)
+                        {
+                            <li>
+                                <img src="~/Images/common/bank_@(i).png" />
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+            <div class="box-bank-img">
+                <div class="form-group">
+                    <div class="checkbox">
+                        <label>
+                            <input type="radio" name="paymaent" value="2">  INTERNATIONAL CARDS
+                        </label>
+                    </div>
+                    <ul>
+                        <li>
+                            <img src="~/Images/common/visa-logo.jpg" />
+
+                        </li>
+                        <li>
+                            <img src="~/Images/common/MasterCard_Logo.jpg" />
+                        </li>
+                        <li>
+                            <img src="~/Images/common/JCB_Cards.jpg" />
+                        </li>
+                        <li>
+                            <img src="~/Images/common/american-express-logo.jpg" />
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="box-bank-p">
+                <div class="form-group">
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" name="iRead" checked="checked">  I have read & agreed to the Terms and Conditions
+                        </label>
+                    </div>
+
+                </div>
+                <div class="col-md-12">
+
+                    <h4>Terms and Conditions</h4>
+                    <p>
+                    </p><h4>
+                        1. Payment:
+                    </h4>
+                    <p>
+                        Accept Credit cards or ATM Debit Cards at the moment you agree to pay a reservation wit. The total cost will be informed before you click “Accept”
+                    </p>
+                    <p>
+                        Based on national currency issued your credit card, card’s supplier will charge extra rate’s cost and other fees (if any) with customer’s consent and card supplier
+                    </p>
+                    <h4>
+                        2. Price &amp; reservation Information:
+                    </h4>
+                    <p>
+                        The prices on our site are highly competitive. All prices on website are per room for your entire stay and are displayed on our website or in the confirmation mail.
+                    </p>
+                    <p>
+                        Sometimes cheaper rates are available on our website for a specific stay at a property, however, these rates made by accommodations providers may carry special restrictions and conditions, for example in respect to cancellation and refund. Please check the room and rate details thoroughly for any search conditions prior to making your reservation.
+                    </p>
+                    <h4>
+                        3. Booking Confirmation:
+                    </h4>
+                    <p>
+                        The information reservation will be confirmation confirmed immediately when you complete the payment and we send you a confirmation mail for reservation information.
+                    </p>
+                    <h4>
+                        4. Free of charge:
+                    </h4>
+                    <p>
+                        Our service is free of charge. Unlike many other parties, we will not charge you for our service or add any additional (reservation) fees to the room rate.
+                    </p>
+                    <h4>
+                        5. Cancellation:
+                    </h4>
+                    <p>
+                        By making a reservation with an accommodation provider, you accept and agree to the relevant cancellation and no-show policy of that accommodation provider, and to any additional (delivery) terms and conditions of the accommodation provider that may apply to your reservation or during your stay, including for services rendered and / or products offered by the accommodation provider (the delivery term and conditions of an accommodation provider can be obtained with the relevant accommodation provider). The general cancellation and no-show policy of each accommodation provider is made available on our website on the accommodation information pages, during the reservation procedure and in the confirmation email.
+                    </p>
+                    <p>
+                        As note that certain rates or special offers are not eligible for cancellation or change. Please check the room details thoroughly for any such conditions prior to making your reservation. Please note that a reservation which requires down payment or (wholly or partly) prepayment may be cancelled (without a prior of default or warming) insofar the relevant (remaining) amount(s) cannot be collected in full on the relevant payment date in accordance with relevant payment policy of the accommodation and the reservation.
+                    </p>
+                    <h4>
+                        6. Website information:
+                    </h4>
+                    <p>
+                        We are committed to all efforts to correct information displayed on the website, however please note that the information also be edited from the vendor room, so we do not guarantee all information are correct completely or not any error.
+                    </p>
+                    <h4>
+                        7. Responsibility:
+                    </h4>
+                    <p>
+                        We will not be responsible for any damage, loss, liability, claim or other fee includes for following causes: carelessness consequences directly or indirectly arising out of our web and involving products or services performed on this page.
+                    </p>
+                    <h4>
+                        8. Interests:
+                    </h4>
+                    <p>
+                        Membership registration will help your reservation is completed and reward basis from the special incentives policies may be adjusted in accordance with actual changes or conditions as well serve you or in the case of force majeure or from our accommodation providers.
+                    </p>
+                    <h4>
+                        9. Copyrights:
+                    </h4>
+                    <p>
+                        The images and contents on <a target="_blank" href="http://trip.global/">http://trip.global/</a> not be copied or used with any other version.
+                    </p>
+                    <p></p>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="box-input-book enable">
+            <label>Card Number: (please enter numbers only, no spaces or dashes).</label>
+            <div class="box-input-book-g">
+                <input name="numberCard" type="text" />
+
+            </div>
+        </div>
+        <div class="box-input-book enable">
+            <label>Card Holder Name:</label>
+            <div class="box-input-book-g">
+                <input name="nameCard" type="text" />
+
+            </div>
+        </div>
+        <div class="box-input-book enable">
+            <label>Expiry Date:</label>
+            <div class="box-input-book-g">
+                <select name="monthEcpiry">
+                    <option value="01">01</option>
+                </select>
+                <select name="yearEcpiry">
+                    <option value="01">01</option>
+                </select>
+            </div>
+        </div>
+        <div class="box-input-book enable">
+            <label>Secure Number:</label>
+            <div class="box-input-book-g">
+                <input name="numberSecure" type="text" class="small-text" />
+            </div>
+        </div>
+    </div>
+</div>

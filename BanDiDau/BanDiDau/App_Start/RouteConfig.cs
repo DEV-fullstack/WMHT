@@ -14,25 +14,25 @@ namespace BanDiDau
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
             #region //Route-Hotel
             routes.MapRoute("hotel-details", "hotel-details/{id}",
-               new { controller = "Home", action = "Hotel_Details",id = UrlParameter.Optional}
+               new { controller = "Hotel", action = "Hotel_Details",id = UrlParameter.Optional}
                );
             routes.MapRoute("hotel-index", "hotel-index",
-             new { controller = "Home", action = "Hotel" }
+             new { controller = "Hotel", action = "Hotel" }
              );
             routes.MapRoute("hotel-payment", "hotel-payment",
-               new { controller = "Home", action = "Hotel_Payment" }
+               new { controller = "Hotel", action = "Hotel_Payment" }
                );
             routes.MapRoute("hotel-payment-registered-card", "hotel-payment-registered-card",
-              new { controller = "Home", action = "Hotel_Ppayment_Registered_Card" }
+              new { controller = "Hotel", action = "Hotel_Ppayment_Registered_Card" }
               );
             routes.MapRoute("hotel-payment-unregistered", "hotel-payment-unregistered",
-              new { controller = "Home", action = "Hotel_Payment_Unregistered" }
+              new { controller = "Hotel", action = "Hotel_Payment_Unregistered" }
               );
             routes.MapRoute("hotel-search", "hotel-search",
-              new { controller = "Home", action = "Hotel_Search" }
+              new { controller = "Hotel", action = "Hotel_Search" }
               );
             routes.MapRoute("hotels-search-results", "hotels-search-results",
-              new { controller = "Home", action = "Hotels_Search_Results" }
+              new { controller = "Hotel", action = "Hotels_Search_Results" }
               );
             #endregion
             #region //Route-Fligth

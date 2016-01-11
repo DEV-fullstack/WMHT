@@ -58,7 +58,7 @@ $('.typeahead').typeahead({
         return $.ajax({
             dataType: 'json',
             type: 'get',
-            url: '/Home/CountryLookup?textValue=' + q,
+            url: '/Hotel/CountryLookup?textValue=' + q,
             chache: false,
             success: function(data) {
                 var result = [];
