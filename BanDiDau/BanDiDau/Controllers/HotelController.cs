@@ -35,8 +35,8 @@ namespace BanDiDau.Controllers
         [OutputCache(Duration = 60, VaryByParam = "id")]
         public ActionResult Hotel_Details(string id, float? price, int? iHotelCode, DateTime? start, DateTime? end, int? sumAdult, int? sumChild, int? sumRoom, int? ageChild1, int? ageChild2,string roomType)
         {
-            try
-            {
+            //try
+            //{
                 XmlDocument soapEnvelopeXml = CreateSoapEnvelopeSearchHotelInfo(id);
                 soapEnvelopeXml = Request_Response(soapEnvelopeXml);
                 //get CDATA from strResponse
@@ -103,12 +103,12 @@ namespace BanDiDau.Controllers
                     return PartialView("_BookingItemHeader", ViewBag.hotel_Info_Result);
                 }
                 return View();
-            }
-            catch (Exception)
-            {
+            //}
+            //catch (Exception)
+            //{
 
-                return RedirectToAction("Index");
-            }
+              
+            //}
 
 
         }
@@ -162,7 +162,7 @@ namespace BanDiDau.Controllers
         /// <param name="ageChild2"> Age-Child2(So tuoi tre thu hai)</param>
         /// <returns></returns>
         //[OutputCache(Duration = 600, VaryByParam = "iCityCode;starts;ends;sumAdult;sumChild;sumRoom;ageChild1;ageChild2")]
-        public ActionResult Hotels_Search_Results(int? iCityCode, int? iHotelCode, DateTime? start, DateTime? end, int? sumAdult, int? sumChild, int? sumRoom, int? ageChild1, int? ageChild2)
+        public ActionResult Hotels_Search_Results(int? iCityCode, string strCityName, int? iHotelCode, DateTime? start, DateTime? end, int? sumAdult, int? sumChild, int? sumRoom, int? ageChild1, int? ageChild2)
         {
             string exs;
             //try
@@ -170,15 +170,23 @@ namespace BanDiDau.Controllers
             XmlDocument soapEnvelopeXml = CreateSoapEnvelopeHotelSearchGeo_Id(iCityCode, iHotelCode, start, end, sumAdult, sumChild, sumRoom, ageChild1, ageChild2);
             List<Hotel_Result_Geo> hotel_Result_Geo = hotelGeo(soapEnvelopeXml);
             ViewBag.hotel_ResultAll = hotel_Result_Geo.DistinctBy(a => a.hotelCode);
+            ViewBag.hotel_Count = hotel_Result_Geo.DistinctBy(a => a.hotelCode).Count();
+            List<Hotel_Result_Geo> hotel_Result_Geo_Category = hotel_Result_Geo.DistinctBy(a => a.hotelCode).ToList();
+            ViewBag.hotel_Category5_Count = hotel_Result_Geo_Category.Where(a => a.category == "5"); ;// so sao khach san -> cai tien sau
+            ViewBag.hotel_Category4_Count = hotel_Result_Geo_Category.Where(a => a.category == "4");
+            ViewBag.hotel_Category3_Count = hotel_Result_Geo_Category.Where(a => a.category == "3");
+            ViewBag.hotel_Category2_Count = hotel_Result_Geo_Category.Where(a => a.category == "2");
+            ViewBag.hotel_Category1_Count = hotel_Result_Geo_Category.Where(a => a.category == "1");
             string strDayStart = (start != null ? start.Value.ToString("yyyy-MM-dd") : DateTime.Now.ToString("yyyy-MM-dd"));
             string strDayEnd = (end != null ? end.Value.ToString("yyyy-MM-dd") : DateTime.Now.AddDays(1).ToString("yyyy-MM-dd"));
             ViewBag.start = strDayStart;
             ViewBag.end = strDayEnd;
             ViewBag.sumAdult = sumAdult;
-            ViewBag.sumChild = sumChild;
+            ViewBag.sumChild = (sumChild>0?sumChild.ToString()+ " child" : "");
             ViewBag.sumRoom = sumRoom;
             ViewBag.ageChild1 = ageChild1;
             ViewBag.ageChild2 = ageChild2;
+            ViewBag.cityName = strCityName.ToLowerInvariant();
             return View();
             //}
             //catch (Exception ex)
@@ -407,6 +415,10 @@ namespace BanDiDau.Controllers
             XElement po = xelement.Element("Main");
             List<Hotel_Result_Geo> hotel_Result = new List<Hotel_Result_Geo>();
             IEnumerable<XElement> hotels = po.Elements();
+            try
+            {
+
+           
             foreach (var hotel in hotels)
             {
                 hotel_Result.Add(new Hotel_Result_Geo
@@ -428,7 +440,13 @@ namespace BanDiDau.Controllers
                     rate = hotel.Element("TripAdvisor").Element("Rating").Value != "" ? float.Parse(hotel.Element("TripAdvisor").Element("Rating").Value) : 0,
 
                 });
+                   
+                }
+            }
+            catch (Exception)
+            {
 
+                throw;
             }
             return hotel_Result;
         }

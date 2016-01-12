@@ -73,7 +73,8 @@ $('.typeahead').typeahead({
         });
     }
 }).bind("typeahead:selected", function (obj, data, name) {
-   $('#cityCode').val(data.cityCode);
+    $('#cityCode').val(data.cityCode);
+    $('#cityName').val(data.value);
 });
 
 

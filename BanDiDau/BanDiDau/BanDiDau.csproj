@@ -1893,6 +1893,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\bandidau.js" />
+    <Content Include="Scripts\external.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\_references.js" />
@@ -1948,6 +1949,8 @@
     <Content Include="Views\Shared\_BookingItemHeader.cshtml" />
     <Content Include="Views\Hotel\Hotels_Search_Results.cshtml" />
     <Content Include="Views\Hotel\ListBank.cshtml" />
+    <Content Include="Views\Shared\_TopAreaSearch.cshtml" />
+    <Content Include="Views\Shared\_BookingList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

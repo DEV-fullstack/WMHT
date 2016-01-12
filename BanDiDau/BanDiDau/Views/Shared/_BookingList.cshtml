@@ -1,0 +1,56 @@
+﻿<ul class="booking-list">
+    @foreach (var item in ViewBag.hotel_ResultAll)
+    {
+
+        <li>
+            <a class="booking-item" href="/hotel-details?id=@item.hotelSearchCode&price=@item.price&iHotelCode=@item.hotelCode&start=@ViewBag.start&end=@ViewBag.end&sumAdult=@ViewBag.sumAdult&sumChild=@ViewBag.sumChild&sumRoom=@ViewBag.sumRoom&ageChild1=@ViewBag.ageChild1&ageChild2=@ViewBag.ageChild2&roomType=@item.roomType">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="booking-item-img-wrap">
+                            <img src="@item.thumbnail" alt="Image Alternative text" title="hotel 2">
+                            <div class="booking-item-img-num"><i class="fa fa-picture-o"></i>11</div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="booking-item-rating">
+                            <ul class="icon-group booking-item-rating-stars">
+                                <li>
+                                    <i class="fa fa-star"></i>
+                                </li>
+                                <li>
+                                    <i class="fa fa-star"></i>
+                                </li>
+                                <li>
+                                    <i class="fa fa-star"></i>
+                                </li>
+                                <li>
+                                    <i class="fa fa-star"></i>
+                                </li>
+                                <li>
+                                    <i class="fa fa-star-o"></i>
+                                </li>
+                            </ul><span class="booking-item-rating-number"><b>@item.category</b> of 5</span>
+                        </div>
+                        <h5 class="booking-item-title">@item.name</h5>
+                        <p class="booking-item-address" style="margin-bottom:0"><i class="fa fa-map-marker"></i> @item.location</p><small class="booking-item-last-booked">Cancellation Deadline: @item.cxDeadline</small>
+                        <div id="trip">Tripadvisor</div>
+                        <img src="@item.urlImageRate" style="width:120px">
+                        <span class="booking-item-rating-number"><b>@item.rate</b> of 5</span><small> (@item.reviewCount reviews)</small>
+                    </div>
+                    <div class="col-md-3">
+                        <span class="booking-item-price-from">from</span><span class="booking-item-price">$@item.price</span><span>/night</span><span class="btn btn-primary">Book Now</span>
+                    </div>
+                </div>
+            </a>
+            @*<input type="hidden" name="iHotelCode" value="@item.hotelCode" />
+                <input type="hidden" name="start" value="@ViewBag.start" />
+                <input type="hidden" name="end" value="@ViewBag.end" />
+                <input type="hidden" name="sumAdult" value="@ViewBag.sumAdult" />
+                <input type="hidden" name="sumChild" value="@ViewBag.sumChild" />
+                <input type="hidden" name="sumRoom" value="@ViewBag.sumRoom" />
+                <input type="hidden" name="ageChild1" value="@ViewBag.ageChild1" />
+                <input type="hidden" name="ageChild2" value="@ViewBag.ageChild2" />
+                <input type="hidden" name="roomType" value="@item.roomType" />*@
+        </li>
+    }
+</ul>
