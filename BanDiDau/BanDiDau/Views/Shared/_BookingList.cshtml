@@ -1,8 +1,10 @@
-﻿<ul class="booking-list">
+﻿@model ColorLife.Core.Mvc.PagedList<BanDiDau.Models.Hotel_Result_Geo>
+@using ColorLife.Core.Mvc
+<ul class="booking-list">
     @foreach (var item in ViewBag.hotel_ResultAll)
     {
 
-        <li>
+        <li data-start="@item.category">
             <a class="booking-item" href="/hotel-details?id=@item.hotelSearchCode&price=@item.price&iHotelCode=@item.hotelCode&start=@ViewBag.start&end=@ViewBag.end&sumAdult=@ViewBag.sumAdult&sumChild=@ViewBag.sumChild&sumRoom=@ViewBag.sumRoom&ageChild1=@ViewBag.ageChild1&ageChild2=@ViewBag.ageChild2&roomType=@item.roomType">
                 <div class="row">
                     <div class="col-md-3">
@@ -54,3 +56,35 @@
         </li>
     }
 </ul>
+<div class="row">
+    <div class="col-md-6">
+        <p>
+
+          
+            
+        </p>
+
+ 
+        <ul class="pagination">
+            @Html.AjaxPager(
+           Model,
+           new PagerOptions()
+           {
+               //PageIndexParameterName = "page",
+               ShowDisabledPagerItems = false,
+               AlwaysShowFirstLastPageNumber = true
+           },
+            new AjaxOptions
+            {
+                UpdateTargetId = "booklist",
+                LoadingElementId = "Loader",
+
+            })
+        </ul>
+    </div>
+    <div class="col-md-6 text-right">
+        <p>
+            Not what you're looking for? <a class="popup-text" href="#search-dialog" data-effect="mfp-zoom-out">Try your search again</a>
+        </p>
+    </div>
+</div>

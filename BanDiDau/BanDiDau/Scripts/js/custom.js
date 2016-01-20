@@ -383,15 +383,15 @@ $('.popup-iframe').magnificPopup({
 });
 
 
-$('.form-group-select-plus').each(function() {
-    var self = $(this),
-        btnGroup = self.find('.btn-group').first(),
-        select = self.find('select');
-    btnGroup.children('label').last().click(function() {
-        btnGroup.addClass('hidden');
-        select.removeClass('hidden');
-    });
-});
+//$('.form-group-select-plus').each(function() {
+//    var self = $(this),
+//        btnGroup = self.find('.btn-group').first(),
+//        select = self.find('select');
+//    btnGroup.children('label').last().click(function() {
+//        btnGroup.addClass('hidden');
+//        select.removeClass('hidden');
+//    });
+//});
 // Responsive videos
 $(document).ready(function() {
     $("body").fitVids();

@@ -25,6 +25,8 @@ namespace BanDiDau
                             "~/Scripts/bootstrap.js",
                             "~/Scripts/respond.js",
                              "~/Scripts/bandidau.js",
+                             "~/Scripts/jquery.simplePagination.js",
+                             //"~/Scripts/filter.js",
                            // < !-- / TEMPLATE IS-- >
                            "~/Scripts/js/slimmenu.js",
                             "~/Scripts/js/bootstrap-datepicker.js",
@@ -32,7 +34,7 @@ namespace BanDiDau
                             "~/Scripts/js/nicescroll.js",
                             "~/Scripts/js/dropit.js",
                             "~/Scripts/js/ionrangeslider.js",
-                             "~/Scripts/js/icheck.js",
+                             "~/Scripts/js/icheck.js", // goi lai o trang rieng
                             "~/Scripts/js/dropit.js",
                             "~/Scripts/js/fotorama.js",
                             "~/Scripts/js/typeahead.js",
@@ -45,6 +47,15 @@ namespace BanDiDau
                             "~/Scripts/js/gridrotator.js",
                             "~/Scripts/js/mapsgoogle.js",
                             "~/Scripts/js/custom.js"));
+            bundles.Add(new ScriptBundle("~/bundles/jplist").Include(
+                            "~/Content/jPlist/js/jplist.core.min.js",
+                            "~/Content/jPlist/js/jplist.filter-toggle-bundle.min.js",
+                            "~/Content/jPlist/js/jplist.checkbox-dropdown.min.js",
+                            "~/Content/jPlist/js/jplist.sort-bundle.min.js",
+                            "~/ Content/jPlist/js/jplist.filter-dropdown-bundle.min.js",
+                            "~/Content/jPlist/js/jplist.pagination-bundle.min.js",
+                            "~/Content/jPlist/js/jplist.textbox-filter.min.js",
+                            "~/Scripts/js/custom.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                         // < !-- / TEMPALTE CSS-- >
@@ -52,7 +63,7 @@ namespace BanDiDau
                       "~/Content/css/font-awesome.css",
                       "~/Content/css/icomoon.css",
                       "~/Content/css/styles.css",
-                        //"~/Content/css/style_add.css",
+                       //"~/Content/css/style_add.css",
                         "~/Content/bandidau.css",
                       "~/Content/css/mystyles.css"));
                    

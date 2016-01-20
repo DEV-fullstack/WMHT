@@ -1,4 +1,14 @@
-﻿$("body").on("click", ".bnt-box-continue", function () {
+﻿//$(window).scroll(function (event) {
+//    var scroll = $(window).scrollTop();
+//    if (scroll > 715) {
+//        $('#dvsearchchange').addClass("fixdiv");
+//    }
+//    else {
+//        $('#dvsearchchange').removeClass("fixdiv");
+//    }
+
+//});
+$("body").on("click", ".bnt-box-continue", function () {
   
     $(this).addClass("enable");
     $(".box-info-customer").addClass("enable");
@@ -286,8 +296,11 @@ $('#start input[type="checkbox"]').on('ifChecked ifUnchecked', function (event) 
         $('input').iCheck('update');
         arrcheck.push(idTo);
         //get viewbag from input start checkbox filter-Hotels_Search_Results.cshtml
-        var listRoomHotel = $(this).data('variable3');
-        fillSelect(listRoomHotel);
+        var listRoomHotel3 = $(this).data('variable3');
+        //var listRoomHotel4 = $(this).data('variable4');
+      //  _getAll(listRoomHotel3);
+        //var listRoomHotel = listRoomHotel3.concat(listRoomHotel4);
+        fillSelect(listRoomHotel3);
        
        
     }
@@ -296,6 +309,52 @@ $('#start input[type="checkbox"]').on('ifChecked ifUnchecked', function (event) 
     }
   
 });
+//function _getAll(iCityCode, strCityName, iHotelCode, hotelName, start, end, sumAdult, sumChild, sumRoom, ageChild1, ageChild2) {
+//    var menuItems = new Array();
+//    menuItems.push({ "Name": "kien", "isChecked": "isChecked" });
+//    $.ajaxSettings.traditional = true
+//    $.ajax({
+//        url: "/Hotel/Hotels_ChangeSearch_Results",
+//        traditional: true,
+//        data: {
+//            iCityCode: JSON.stringify(iCityCode),
+//            strCityName: JSON.stringify(strCityName),
+//            iHotelCode: JSON.stringify(iHotelCode),
+//            hotelName: JSON.stringify(hotelName),
+//            start: JSON.stringify(start),
+//            end: JSON.stringify(end),
+//            sumAdult: JSON.stringify(sumAdult),
+//            sumChild: JSON.stringify(sumChild),
+//            sumRoom: JSON.stringify(sumRoom),
+//            ageChild1: JSON.stringify(ageChild1),
+//            ageChild2: JSON.stringify(ageChild2),
+           
+//        },
+//       // data: JSON.stringify({ "start_3": listRoomHotel3 }),
+//        type: "POST",
+//        contentType: "application/json; charset=utf-8",
+//        dataType: "json",
+//        success: function (result) {
+//            var str = '';
+//            $.each(result, function (key, item) {
+//                str += '<tr id="' + item.ContentID + '">';
+//                str += '<td id="' + item.ContentID + '"><input type ="checkbox" id="' + item.ContentID + '"/></td';
+//                str += '<td class="mailbox-subject">' + item.Messenger + '</td>';
+//                str += '<td></td>';
+//                str += '<td></td>';
+//                str += '<td class="mailbox-date">' + parseJsonDate(item.Date) + '</td>';
+//                str += '</tr>';
+//            });
+
+//            $('#tbody').html(str);
+//        },
+//        error: function (errormessage) {
+//            alert(errormessage.responseText);
+//        }
+//    });
+
+//    return false;
+//}
 function fillSelect(listRoomHotel) {
     var start= $('#start').val();
     var end= $('#end').val();
@@ -371,3 +430,4 @@ $('body').on('', '#start input[type="checkbox"]', function () {
     }
 });
 });
+

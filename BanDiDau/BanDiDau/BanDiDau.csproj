@@ -44,6 +44,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ColorLife.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\colorlife.tuanitpro.com.1.0.9\lib\net40\ColorLife.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="HtmlAgilityPack, Version=1.4.6.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
+      <HintPath>..\packages\colorlife.tuanitpro.com.1.0.9\lib\net40\HtmlAgilityPack.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
       <Private>True</Private>
@@ -162,6 +170,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_Start\BundleConfig - Copy.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\IdentityConfig.cs" />
@@ -177,9 +186,11 @@
     <Compile Include="Library\VPCRequest.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Class1.cs" />
+    <Compile Include="Models\ErrorHotel.cs" />
     <Compile Include="Models\Hotel_Destionations.cs" />
     <Compile Include="Models\Hotel_DestionationsRecoder.cs" />
     <Compile Include="Models\Hotel_Result_Id.cs" />
+    <Compile Include="Models\Hotel_Result_PartInfo .cs" />
     <Compile Include="Models\Hotel_Result_Info.cs" />
     <Compile Include="Models\Hotel_Result_Geo.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -189,6 +200,9 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\img\bg-sprite-icons_v22.png" />
+    <Content Include="Content\img\icon_arrow_down.jpg" />
+    <Content Include="Content\img\icon_arrow_up.jpg" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\css\bootstrap.css" />
@@ -212,6 +226,13 @@
     <Content Include="Content\css\schemes\turkish-rose.css" />
     <Content Include="Content\css\styles.css" />
     <Content Include="Content\css\style_add.css" />
+    <Content Include="Content\CustomDropDownListStyling\css\demo.css" />
+    <Content Include="Content\CustomDropDownListStyling\css\font-awesome.css" />
+    <Content Include="Content\CustomDropDownListStyling\css\noJS.css" />
+    <Content Include="Content\CustomDropDownListStyling\css\style.css" />
+    <Content Include="Content\CustomDropDownListStyling\font\fontawesome-webfont.svg" />
+    <Content Include="Content\CustomDropDownListStyling\images\bg.jpg" />
+    <Content Include="Content\CustomDropDownListStyling\js\modernizr.custom.79639.js" />
     <Content Include="Content\img\100x100.png" />
     <Content Include="Content\img\1024x487.png" />
     <Content Include="Content\img\1024x672.png" />
@@ -1837,12 +1858,89 @@
     <Content Include="Content\img\payment\western-union-straight-64px.png" />
     <Content Include="Content\img\paypal.png" />
     <Content Include="Content\img\Porsche-Cayenne-Turbo-S.png" />
+    <Content Include="Content\img\sprite.png" />
     <Content Include="Content\img\Toyota-Prius-Plus.png" />
     <Content Include="Content\img\trip_rating_none.png" />
     <Content Include="Content\img\Volkswagen-Polo-BlueGT.png" />
     <Content Include="Content\img\Volkswagen-Touareg-Edition-X.png" />
     <Content Include="Content\img\Volvo-V40.png" />
     <Content Include="Content\bandidau.css" />
+    <Content Include="Content\jPlist\css\jplist.checkbox-dropdown.min.css" />
+    <Content Include="Content\jPlist\css\jplist.core.min.css" />
+    <Content Include="Content\jPlist\css\jplist.demo-pages.min.css" />
+    <Content Include="Content\jPlist\css\jplist.filter-toggle-bundle.min.css" />
+    <Content Include="Content\jPlist\css\jplist.pagination-bundle.min.css" />
+    <Content Include="Content\jPlist\css\jplist.textbox-filter.min.css" />
+    <Content Include="Content\jPlist\img\common\ajax-loader-line.gif" />
+    <Content Include="Content\jPlist\img\common\ajax-loader.gif" />
+    <Content Include="Content\jPlist\img\common\favicon.png" />
+    <Content Include="Content\jPlist\img\common\rocket.png" />
+    <Content Include="Content\jPlist\img\icons\grid-btn-disabled.png" />
+    <Content Include="Content\jPlist\img\icons\grid-btn.png" />
+    <Content Include="Content\jPlist\img\icons\list-btn-disabled.png" />
+    <Content Include="Content\jPlist\img\icons\list-btn.png" />
+    <Content Include="Content\jPlist\img\icons\thumbs-btn-disabled.png" />
+    <Content Include="Content\jPlist\img\icons\thumbs-btn.png" />
+    <Content Include="Content\jPlist\img\thumbs\arch-1.jpg" />
+    <Content Include="Content\jPlist\img\thumbs\arch-2.jpg" />
+    <Content Include="Content\jPlist\img\thumbs\autumn-1.jpg" />
+    <Content Include="Content\jPlist\img\thumbs\boats-1.jpg" />
+    <Content Include="Content\jPlist\img\thumbs\book-1.jpg" />
+    <Content Include="Content\jPlist\img\thumbs\business-1.jpg" />
+    <Content Include="Content\jPlist\img\thumbs\calendar-1.jpg" />
+    <Content Include="Content\jPlist\img\thumbs\car-1.jpg" />
+    <Content Include="Content\jPlist\img\thumbs\christmas-1.jpg" />
+    <Content Include="Content\jPlist\img\thumbs\christmas-2.jpg" />
+    <Content Include="Content\jPlist\img\thumbs\christmas-3.jpg" />
+    <Content Include="Content\jPlist\img\thumbs\city-1.jpg" />
+    <Content Include="Content\jPlist\img\thumbs\city-2.jpg" />
+    <Content Include="Content\jPlist\img\thumbs\coffee-grass.jpg" />
+    <Content Include="Content\jPlist\img\thumbs\coins.jpg" />
+    <Content Include="Content\jPlist\img\thumbs\crayons.jpg" />
+    <Content Include="Content\jPlist\img\thumbs\cupcakes.jpg" />
+    <Content Include="Content\jPlist\img\thumbs\eggs-nest.jpg" />
+    <Content Include="Content\jPlist\img\thumbs\flower-1.jpg" />
+    <Content Include="Content\jPlist\img\thumbs\flower-2.jpg" />
+    <Content Include="Content\jPlist\img\thumbs\flower-3.jpg" />
+    <Content Include="Content\jPlist\img\thumbs\fountain.jpg" />
+    <Content Include="Content\jPlist\img\thumbs\leaves.jpg" />
+    <Content Include="Content\jPlist\img\thumbs\lichterman.jpg" />
+    <Content Include="Content\jPlist\img\thumbs\pinecone.jpg" />
+    <Content Include="Content\jPlist\img\thumbs\river-1.jpg" />
+    <Content Include="Content\jPlist\img\thumbs\river-2.jpg" />
+    <Content Include="Content\jPlist\img\thumbs\sunset-1.jpg" />
+    <Content Include="Content\jPlist\img\thumbs\tree.jpg" />
+    <Content Include="Content\jPlist\img\thumbs\winter-1.jpg" />
+    <Content Include="Content\jPlist\img\thumbs\winter-2.jpg" />
+    <Content Include="Content\jPlist\img\thumbs\winter-sun.jpg" />
+    <Content Include="Content\jPlist\img\thumbs\woodstump.jpg" />
+    <Content Include="Content\jPlist\js\jplist.checkbox-dropdown.min.js" />
+    <Content Include="Content\jPlist\js\jplist.core.min.js" />
+    <Content Include="Content\jPlist\js\jplist.filter-dropdown-bundle.min.js" />
+    <Content Include="Content\jPlist\js\jplist.filter-toggle-bundle.min.js" />
+    <Content Include="Content\jPlist\js\jplist.pagination-bundle.min.js" />
+    <Content Include="Content\jPlist\js\jplist.sort-bundle.min.js" />
+    <Content Include="Content\jPlist\js\jplist.textbox-filter.min.js" />
+    <Content Include="Content\MenuToggle\css\stylesmenufiter.css" />
+    <Content Include="Content\MenuToggle\css\stylemenu - Copy.css" />
+    <Content Include="Content\MenuToggle\images\bg.jpg" />
+    <Content Include="Content\MenuToggle\images\cog%402x.png" />
+    <Content Include="Content\MenuToggle\images\cog.png" />
+    <Content Include="Content\MenuToggle\images\envelope%402x.png" />
+    <Content Include="Content\MenuToggle\images\envelope.png" />
+    <Content Include="Content\MenuToggle\images\expand%402x.png" />
+    <Content Include="Content\MenuToggle\images\expand.png" />
+    <Content Include="Content\MenuToggle\images\key%402x.png" />
+    <Content Include="Content\MenuToggle\images\key.png" />
+    <Content Include="Content\MenuToggle\images\messages.png" />
+    <Content Include="Content\MenuToggle\images\postage_stamp_silver.png" />
+    <Content Include="Content\MenuToggle\images\user%402x.png" />
+    <Content Include="Content\MenuToggle\images\user.png" />
+    <Content Include="Content\MenuToggle\js\retina.min.js" />
+    <Content Include="Content\MenuToggle\js\script.js" />
+    <Content Include="Content\styles-core-29a9c19c09.strDomain.css" />
+    <Content Include="Scripts\filter.js" />
+    <Content Include="Scripts\jquery-1.9.1.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Scripts\js\bootstrap-datepicker.js" />
@@ -1858,6 +1956,7 @@
     <Content Include="Scripts\js\gridrotator.js" />
     <Content Include="Scripts\js\icheck.js" />
     <Content Include="Scripts\js\ionrangeslider.js" />
+    <Content Include="Scripts\jquery.simplePagination.js" />
     <Content Include="Scripts\js\mapsgoogle.js" />
     <Content Include="Scripts\js\jquery.js" />
     <Content Include="Scripts\js\magnific.js" />
@@ -1883,6 +1982,9 @@
     <Content Include="Content\fonts\icomoon.ttf" />
     <Content Include="Content\fonts\icomoon.woff" />
     <Content Include="Content\img\flags\.DS_Store" />
+    <Content Include="Content\CustomDropDownListStyling\font\fontawesome-webfont.eot" />
+    <Content Include="Content\CustomDropDownListStyling\font\fontawesome-webfont.ttf" />
+    <Content Include="Content\CustomDropDownListStyling\font\fontawesome-webfont.woff" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -1951,6 +2053,15 @@
     <Content Include="Views\Hotel\ListBank.cshtml" />
     <Content Include="Views\Shared\_TopAreaSearch.cshtml" />
     <Content Include="Views\Shared\_BookingList.cshtml" />
+    <Content Include="Views\Home\Contasct.cshtml" />
+    <Content Include="Views\Hotel\paging.cshtml" />
+    <Content Include="Views\Hotel\Hotels_Search_Results - Copy.cshtml" />
+    <Content Include="Views\Hotel\Hotels_Search_Results - Copy %282%29.cshtml" />
+    <Content Include="Views\Hotel\Hotels_Search_Results - Copy %283%29.cshtml" />
+    <Content Include="Views\Shared\_TopAreaSearchPart.cshtml" />
+    <Content Include="Views\Shared\_RoomList.cshtml" />
+    <Content Include="Views\Shared\_SearchLoading.cshtml" />
+    <Content Include="Views\Shared\_Error.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

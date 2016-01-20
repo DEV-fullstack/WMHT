@@ -1,0 +1,483 @@
+﻿
+@{
+    ViewBag.Title = "paging";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .checkbox-category{
+        width:100%;
+        float:left;
+    }
+</style>
+<!doctype html>
+<html>
+
+<head>
+    <title>Mix Of Different Controls | jPList - jQuery Data Grid Controls</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- font libs -->
+    <link href="http://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css" />
+    <link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet" />
+
+    <!-- demo page styles -->
+    <link href="~/Content/jPlist/css/jplist.demo-pages.min.css" rel="stylesheet" type="text/css" />
+
+    <!-- jQuery lib -->
+    <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+
+    <!-- jPList core js and css  -->
+    <link href="~/Content/jPlist/css/jplist.core.min.css" rel="stylesheet" type="text/css" />
+    <script src="~/Content/jPlist/js/jplist.core.min.js"></script>
+    <!-- jPList toggle bundle -->
+    <script src="~/Content/jPlist/js/jplist.filter-toggle-bundle.min.js"></script>
+    <!-- checkbox dropdown control js ans css -->
+    <link rel="stylesheet" href="~/Content/jPlist/css/jplist.checkbox-dropdown.min.css" />
+    <script src="~/Content/jPlist/js/jplist.checkbox-dropdown.min.js"></script>
+
+    <!-- sort bundle -->
+    <script src="~/Content/jPlist/js/jplist.sort-bundle.min.js"></script>
+
+    <!-- filter dropdown bundle -->
+    <script src="~/Content/jPlist/js/jplist.filter-dropdown-bundle.min.js"></script>
+
+    <!-- pagination bundle -->
+    <link href="~/Content/jPlist/css/jplist.pagination-bundle.min.css" rel="stylesheet" type="text/css" />
+    <script src="~/Content/jPlist/js/jplist.pagination-bundle.min.js"></script>
+
+    <!-- textbox control -->
+    <link href="~/Content/jPlist/css/jplist.textbox-filter.min.css" rel="stylesheet" type="text/css" />
+    <script src="~/Content/jPlist/js/jplist.textbox-filter.min.js"></script>
+
+
+</head>
+<body>
+    <input type="hidden" id="start" name="start" value="@ViewBag.start" />
+    <input type="hidden" id="end" name="end" value="@ViewBag.end" />
+    <input type="hidden" id="sumAdult" name="sumAdult" value="@ViewBag.sumAdult" />
+    <input type="hidden" id="sumChild" name="sumChild" value="@ViewBag.sumChild" />
+    <input type="hidden" id="sumRoom" name="sumRoom" value="@ViewBag.sumRoom" />
+    <input type="hidden" id="ageChild1" name="ageChild1" value="@ViewBag.ageChild1" />
+    <input type="hidden" id="ageChild2" name="ageChild2" value="@ViewBag.ageChild2" />
+    <div class="container"style="width:1300px">
+        <ul class="breadcrumb">
+            <li>
+                <a href="index.html">Home</a>
+            </li>
+            <li>
+                <a href="#">United States</a>
+            </li>
+            <li>
+                <a href="#">New York (NY)</a>
+            </li>
+            <li>
+                <a href="#">New York City</a>
+            </li>
+            <li class="active">New York City Hotels</li>
+        </ul>
+        <div class="mfp-with-anim mfp-dialog mfp-search-dialog mfp-hide" id="search-dialog" style="max-width:1000px">
+            @Html.Partial("_TopAreaSearch")
+        </div>
+        <h3 class="booking-title">
+            @ViewBag.hotel_Count hotels in @ViewBag.cityName on @ViewBag.start for @ViewBag.sumAdult adult @ViewBag.sumChild
+            <small><a class="popup-text" href="#search-dialog" data-effect="mfp-zoom-out">Change search</a></small>
+        </h3>
+       
+            <div class="col-md-12">
+                <div class="nav-drop booking-sort">
+                    <h5 class="booking-sort-title"><a href="#">Sort: Aviability<i class="fa fa-angle-down"></i><i class="fa fa-angle-up"></i></a></h5>
+                    <ul class="nav-drop-menu">
+                        <li>
+                            <a href="#">Price (low to high)</a>
+                        </li>
+                        <li>
+                            <a href="#">Price (hight to low)</a>
+                        </li>
+                        <li>
+                            <a href="#">Ranking</a>
+                        </li>
+                        <li>
+                            <a href="#">Distance</a>
+                        </li>
+                        <li>
+                            <a href="#">Number of Reviews</a>
+                        </li>
+                    </ul>
+                </div>
+                  <!-- main content -->
+                   <div class="center" style="width:1300px">
+                            <!--<><><><><><><><><><><><><><><><><><><><><><><><><><>  START <><><><><><><><><><><><><><><><><><><><><><><><><><>-->
+                            <div id="demo" class="box jplist">
+                                <!-- ios button: show/hide panel -->
+                                <div class="jplist-ios-button">
+                                    <i class="fa fa-sort"></i>
+                                    jPList Actions
+                                </div>
+
+                                <div class="col-md-3" style="margin-top: 30px">
+                                    <aside class="booking-filters text-white">
+                                        <h3>Filter By:</h3>
+                                       
+                                            <!-- panel -->
+                                            <div class="jplist-panel box panel-top">
+               <!-- ------------------------------checkbox text filter by category -------------------------------------->
+                                                <h5 class="booking-filters-title">Start</h5>
+                                                <div class="jplist-grouddp"
+                                                    data-control-type="checkbox-text-filter"
+                                                    data-control-action="filter"
+                                                    data-control-name="categorykien"
+                                                    data-path=".categorykien"
+                                                    data-logic="or">
+                                                    <ul>
+                                                        <li class="checkbox-category">
+                                                            <input value="5" id="5" type="checkbox">
+                                                            <label for="5">5 start</label>
+                                                        </li>
+                                                        <li class="checkbox-category">
+                                                            <input value="4" id="4" type="checkbox">
+                                                            <label for="4">4 start</label>
+                                                        </li>
+                                                        <li class="checkbox-category">
+                                                            <input value="3" id="3" type="checkbox">
+                                                            <label for="3">3 start</label>
+                                                        </li>
+                                                        <li class="checkbox-category">
+                                                            <input value="2" id="2" type="checkbox">
+                                                            <label for="2">2 start</label>
+                                                        </li>
+                                                        <li class="checkbox-category">
+                                                            <input value="1" id="1" type="checkbox">
+                                                            <label for="1">1 start</label>
+                                                        </li>
+</ul>
+                                                </div>
+
+
+
+
+
+                                                <!-- items per page dropdown -->
+                                                <div class="jplist-drop-down" data-control-type="items-per-page-drop-down" data-control-name="paging" data-control-action="paging">
+                                                    <div class="jplist-dd-panel"> 10 per page </div>
+
+                                                    <ul style="display: none;">
+                                                        <li class=""><span data-number="3"> 3 per page </span></li>
+                                                        <li><span data-number="5"> 5 per page </span></li>
+                                                        <li class="active"><span data-number="10" data-default="true"> 10 per page </span></li>
+                                                        <li><span data-number="all"> View All </span></li>
+                                                    </ul>
+                                                </div>
+
+                                                <!-- sort dropdown -->
+                                                <div class="jplist-drop-down" data-control-type="sort-drop-down" data-control-name="sort" data-control-action="sort" data-datetime-format="{month}/{day}/{year}">
+                                                    <div class="jplist-dd-panel">Likes asc</div>
+                                                    <!-- {year}, {month}, {day}, {hour}, {min}, {sec} -->
+
+                                                    <ul style="display: none;">
+                                                        <li class=""><span data-path="default">Sort by</span></li>
+                                                        <li><span data-path=".title" data-order="asc" data-type="text">Title A-Z</span></li>
+                                                        <li><span data-path=".title" data-order="desc" data-type="text">Title Z-A</span></li>
+                                                        <li><span data-path=".desc" data-order="asc" data-type="text">Description A-Z</span></li>
+                                                        <li><span data-path=".desc" data-order="desc" data-type="text">Description Z-A</span></li>
+                                                        <li class="active"><span data-path=".like" data-order="asc" data-type="number" data-default="true">Likes asc</span></li>
+                                                        <li><span data-path=".like" data-order="desc" data-type="number">Likes desc</span></li>
+                                                        <li><span data-path=".date" data-order="asc" data-type="datetime">Date asc</span></li>
+                                                        <li><span data-path=".date" data-order="desc" data-type="datetime">Date desc</span></li>
+                                                    </ul>
+                                                </div>
+                                                <!-- checkbox text filter by keyword -->
+                                                <div class="jplist-grouddp"
+                                                     data-control-type="checkbox-text-filter"
+                                                     data-control-action="filter"
+                                                     data-control-name="keywords"
+                                                     data-path=".keywords"
+                                                     data-logic="or">
+                                                    <input value="Internet" id="Internet" type="checkbox" class="">
+                                                    <label for="Internet">Internet</label>
+                                                </div>
+                                                <!-- checkbox text filter by category -->
+                                                <div class="jplist-grouddp"
+                                                     data-control-type="checkbox-text-filter"
+                                                     data-control-action="filter"
+                                                     data-control-name="categorykien"
+                                                     data-path=".categorykien"
+                                                     data-logic="or">
+                                                    <input value="5" id="5" type="checkbox">
+                                                    <label for="5">5 startkien</label>
+                                                    <input value="3" id="3" type="checkbox">
+                                                    <label for="3">3 startkien</label>
+
+                                                </div>
+                                                <div class="jplist-group"
+                                                     data-control-type="checkbox-group-filter"
+                                                     data-control-action="filter"
+                                                     data-control-name="themes">
+                                                    <input data-path=".category" id="category" type="checkbox" class="">
+                                                    <label for="category">3 start</label>
+                                                </div>
+                                                <!-- checkbox dropdown -->
+                                                <div class="jplist-checkbox-dropdown"
+                                                     data-control-type="checkbox-dropdown"
+                                                     data-control-name="category-checkbox-dropdown"
+                                                     data-control-action="filter"
+                                                     data-no-selected-text="Filter by start:"
+                                                     data-one-item-text="Filtered by {selected}"
+                                                     data-many-items-text="{num} selected">
+
+                                                    <ul>
+                                                        <li>
+                                                            <input data-path=".start_5" id="start_5" type="checkbox" />
+                                                            <label for="start_5">5 start</label>
+                                                        </li>
+                                                        <li>
+                                                            <input data-path=".start_4" id="start_4" type="checkbox" />
+                                                            <label for="start_4">4 start</label>
+                                                        </li>
+                                                        <li>
+                                                            <input data-path=".start_3" id="start_3" type="checkbox" />
+                                                            <label for="start_3">3 start</label>
+                                                        </li>
+                                                        <li>
+                                                            <input data-path=".start_2" id="start_2" type="checkbox" />
+                                                            <label for="start_2">2 start</label>
+                                                        </li>
+
+                                                        <li>
+                                                            <input data-path=".start_1" id="start_1" type="checkbox" />
+                                                            <label for="start_1">1 start</label>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                <!-- checkbox dropdown -->
+                                                <div class="jplist-checkbox-dropdown" data-control-type="checkbox-dropdown" data-control-name="group-checkbox-dropdown" data-control-action="filter" data-no-selected-text="Filter by Group:" data-one-item-text="Filtered by {selected}" data-many-items-text="{num} selected">
+                                                    <div class="jplist-dd-panel">Filter by Group:</div>
+
+                                                    <ul style="display: none;">
+                                                        <li class="active">
+                                                            <input data-path=".group1" id="group1" type="checkbox">
+                                                            <label for="group1">Group 1</label>
+                                                        </li>
+
+                                                        <li>
+                                                            <input data-path=".group2" id="group2" type="checkbox">
+                                                            <label for="group2">Group 2</label>
+                                                        </li>
+
+                                                        <li>
+                                                            <input data-path=".group3" id="group3" type="checkbox">
+                                                            <label for="group3">Group 3</label>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                <!-- filter by title -->
+                                                <div class="text-filter-box">
+
+                                                    <i class="fa fa-search  jplist-icon"></i>
+
+                                                    <!--[if lt IE 10]>
+                <div class="jplist-label">Filter by Title:</div>
+                <![endif]-->
+
+                                                    <input data-path=".title" type="text" value="" placeholder="Filter by Title" data-control-type="textbox" data-control-name="title-filter" data-control-action="filter">
+                                                </div>
+
+                                                <!-- filter by description -->
+                                                <div class="text-filter-box">
+
+                                                    <i class="fa fa-search  jplist-icon"></i>
+
+                                                    <!--[if lt IE 10]>
+                <div class="jplist-label">Filter by Description:</div>
+                <![endif]-->
+
+                                                    <input data-path=".desc" type="text" value="" placeholder="Filter by Description" data-control-type="textbox" data-control-name="desc-filter" data-control-action="filter">
+                                                </div>
+                                                <!-- filter by description -->
+                                                <div class="text-filter-box">
+
+                                                    <i class="fa fa-search  jplist-icon"></i>
+
+                                                    <!--[if lt IE 10]>
+                <div class="jplist-label">Filter by Description:</div>
+                <![endif]-->
+
+                                                    <input data-path=".category"
+                                                           type="text"
+                                                           value=""
+                                                           placeholder="Filter by start"
+                                                           data-control-type="textbox"
+                                                           data-control-name="category-filter"
+                                                           data-control-action="filter" />
+                                                </div>
+                                                <!-- pagination results -->
+                                                <div class="jplist-label" data-type="Page {current} of {pages}" data-control-type="pagination-info" data-control-name="paging" data-control-action="paging">Page 1 of 4</div>
+
+                                                <!-- pagination control -->
+                                                <div class="jplist-pagination" data-control-type="pagination" data-control-name="paging" data-control-action="paging"><div class="jplist-pagingprev jplist-hidden" data-type="pagingprev"><button type="button" class="jplist-first" data-number="0" data-type="first">«</button><button type="button" class="jplist-prev" data-type="prev" data-number="0">‹</button></div><div class="jplist-pagingmid" data-type="pagingmid"><div class="jplist-pagesbox" data-type="pagesbox"><button type="button" data-type="page" class="jplist-current" data-active="true" data-number="0">1</button> <button type="button" data-type="page" data-number="1">2</button> <button type="button" data-type="page" data-number="2">3</button> <button type="button" data-type="page" data-number="3">4</button> </div></div><div class="jplist-pagingnext" data-type="pagingnext"><button type="button" class="jplist-next" data-type="next" data-number="1">›</button><button type="button" class="jplist-last" data-type="last" data-number="3">»</button></div></div>
+
+                                            </div>
+                                       
+                                    </aside>
+                                    </div>
+                                 <!-- data -->
+                                <div class="list box text-shadow" style="width:800px">
+                                            <ul class="booking-list">
+                                         @foreach (var item in ViewBag.hotel_ResultAll)
+                                        {
+                                        <li>
+                                            <!-- item 1 -->
+                                            <div class="list-item box">
+                                                <a class="booking-item" href="/hotel-details?id=@item.hotelSearchCode&price=@item.price&iHotelCode=@item.hotelCode&start=@ViewBag.start&end=@ViewBag.end&sumAdult=@ViewBag.sumAdult&sumChild=@ViewBag.sumChild&sumRoom=@ViewBag.sumRoom&ageChild1=@ViewBag.ageChild1&ageChild2=@ViewBag.ageChild2&roomType=@item.roomType">
+                                                    <div class="row">
+                                                        <!-- img -->
+                                                        <div class="col-md-3" >
+                                                            <div class="booking-item-img-wrap">
+                                                                <img src="@item.thumbnail" alt="Image Alternative text" title="hotel 2">
+                                                                <div class="booking-item-img-num"><i class="fa fa-picture-o"></i>11</div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="booking-item-rating">
+                                                                <ul class="icon-group booking-item-rating-stars">
+                                                                    <li>
+                                                                        <i class="fa fa-star"></i>
+                                                                    </li>
+                                                                    <li>
+                                                                        <i class="fa fa-star"></i>
+                                                                    </li>
+                                                                    <li>
+                                                                        <i class="fa fa-star"></i>
+                                                                    </li>
+                                                                    <li>
+                                                                        <i class="fa fa-star"></i>
+                                                                    </li>
+                                                                    <li>
+                                                                        <i class="fa fa-star-o"></i>
+                                                                    </li>
+                                                                </ul><span class="booking-item-rating-number start_@item.category"><b>@item.category</b> of 5</span>
+                                                            </div>
+                                                            <h5 class="booking-item-title">@item.name</h5>
+                                                            <p class="booking-item-address" style="margin-bottom:0"><i class="fa fa-map-marker"></i> @item.location</p><small class="booking-item-last-booked">Cancellation Deadline: @item.cxDeadline</small>
+                                                            <div id="trip">Tripadvisor</div>
+                                                            <img src="@item.urlImageRate" style="width:120px">
+                                                            <span class="booking-item-rating-number"><b>@item.rate</b> of 5</span><small> (@item.reviewCount reviews)</small>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <span class="booking-item-price-from">from</span><span class="booking-item-price">$@item.price</span><span>/night</span><span class="btn btn-primary">Book Now</span>
+                                                        </div>
+                                                    </div>
+                                                    <!-- data -->
+                                                    <p style="display:none" class="date">05/08/2003</p>
+                                                    <input style="display:none" class="title" />
+                                                    <p style="display:none" class="category">@item.category</p>
+                                                    <p style="display:none" class="desc">A calendar i is done b
+                                                    <p style="display:none" class="themes">
+                                                        <span style="display:none" class="category3">@item.category </span >
+                                                        <span class="other">Other</span>
+                                                        <span class="group1">Group 1</span>
+                                                    </p>
+                                                    <p class="keywords">@item.roomType</p>
+                                                    <p class="categorykien">@item.category</p>
+                                                    <p style="display:none" class="like">18 Likes</p>
+                                                </a>
+                                            </div>
+                                       </li>
+                                          }
+                                          </ul>
+                                    
+                                </div>
+
+                                <!-- no results -->
+                                <div class="box jplist-no-results text-shadow align-center">
+                                            <p>No results found</p>
+                                        </div>
+
+                                <!-- ios button: show/hide panel -->
+                                <div class="jplist-ios-button">
+                                            <i class="fa fa-sort"></i>
+                                            jPList Actions
+                                        </div>
+
+                                <!-- panel -->
+                                <div class="jplist-panel box panel-bottom">
+
+                                            <!-- items per page dropdown -->
+                                            <div class="jplist-drop-down"
+                                                 data-control-type="items-per-page-drop-down"
+                                                 data-control-name="paging"
+                                                 data-control-action="paging"
+                                                 data-control-animate-to-top="true">
+
+                                                <ul>
+                                                    <li><span data-number="3"> 3 per page </span></li>
+                                                    <li><span data-number="5"> 5 per page </span></li>
+                                                    <li><span data-number="10" data-default="true"> 10 per page </span></li>
+                                                    <li><span data-number="all"> View All </span></li>
+                                                </ul>
+                                            </div>
+
+                                            <!-- sort dropdown -->
+                                            <div class="jplist-drop-down"
+                                                 data-control-type="sort-drop-down"
+                                                 data-control-name="sort"
+                                                 data-control-action="sort"
+                                                 data-control-animate-to-top="true"
+                                                 data-datetime-format="{month}/{day}/{year}">
+                                                <!-- {year}, {month}, {day}, {hour}, {min}, {sec} -->
+
+                                                <ul>
+                                                    <li><span data-path="default">Sort by</span></li>
+                                                    <li><span data-path=".title" data-order="asc" data-type="text">Title A-Z</span></li>
+                                                    <li><span data-path=".title" data-order="desc" data-type="text">Title Z-A</span></li>
+                                                    <li><span data-path=".desc" data-order="asc" data-type="text">Description A-Z</span></li>
+                                                    <li><span data-path=".desc" data-order="desc" data-type="text">Description Z-A</span></li>
+                                                    <li><span data-path=".like" data-order="asc" data-type="number" data-default="true">Likes asc</span></li>
+                                                    <li><span data-path=".like" data-order="desc" data-type="number">Likes desc</span></li>
+                                                    <li><span data-path=".date" data-order="asc" data-type="datetime">Date asc</span></li>
+                                                    <li><span data-path=".date" data-order="desc" data-type="datetime">Date desc</span></li>
+                                                </ul>
+                                            </div>
+
+                                            <!-- pagination results -->
+                                            <div class="jplist-label"
+                                                 data-type="{start} - {end} of {all}"
+                                                 data-control-type="pagination-info"
+                                                 data-control-name="paging"
+                                                 data-control-action="paging">
+                                            </div>
+
+                                            <!-- pagination -->
+                                            <div class="jplist-pagination"
+                                                 data-control-animate-to-top="true"
+                                                 data-control-type="pagination"
+                                                 data-control-name="paging"
+                                                 data-control-action="paging">
+                                            </div>
+
+                                        </div>
+
+                                </div>
+
+                                <!--<><><><><><><><><><><><><><><><><><><><><><><><><><>  END <><><><><><><><><><><><><><><><><><><><><><><><><><>-->
+                            </div>
+                
+            </div>
+
+        <div class="gap"></div>
+    </div>
+
+    <!-- jPList start -->
+    <script>
+            $('document').ready(function () {
+
+                $('#demo').jplist({
+                    itemsBox: '.list'
+                    , itemPath: '.list-item'
+                    , panelPath: '.jplist-panel'
+                });
+            });
+    </script>
+</body>
+
+</html>
+

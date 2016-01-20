@@ -83,8 +83,10 @@ F:\Projects\TripGlobal\WMHT\BanDiDau\BanDiDau\bin\BanDiDau.dll.config
 F:\Projects\TripGlobal\WMHT\BanDiDau\BanDiDau\bin\BanDiDau.dll
 F:\Projects\TripGlobal\WMHT\BanDiDau\BanDiDau\bin\BanDiDau.pdb
 F:\Projects\TripGlobal\WMHT\BanDiDau\BanDiDau\bin\Antlr3.Runtime.dll
+F:\Projects\TripGlobal\WMHT\BanDiDau\BanDiDau\bin\ColorLife.Core.dll
 F:\Projects\TripGlobal\WMHT\BanDiDau\BanDiDau\bin\EntityFramework.dll
 F:\Projects\TripGlobal\WMHT\BanDiDau\BanDiDau\bin\EntityFramework.SqlServer.dll
+F:\Projects\TripGlobal\WMHT\BanDiDau\BanDiDau\bin\HtmlAgilityPack.dll
 F:\Projects\TripGlobal\WMHT\BanDiDau\BanDiDau\bin\Microsoft.AspNet.Identity.Core.dll
 F:\Projects\TripGlobal\WMHT\BanDiDau\BanDiDau\bin\Microsoft.AspNet.Identity.EntityFramework.dll
 F:\Projects\TripGlobal\WMHT\BanDiDau\BanDiDau\bin\Microsoft.AspNet.Identity.Owin.dll
@@ -133,6 +135,5 @@ F:\Projects\TripGlobal\WMHT\BanDiDau\BanDiDau\bin\Microsoft.Owin.Security.OAuth.
 F:\Projects\TripGlobal\WMHT\BanDiDau\BanDiDau\bin\Microsoft.Owin.Security.Google.xml
 F:\Projects\TripGlobal\WMHT\BanDiDau\BanDiDau\bin\Microsoft.Owin.Security.Twitter.xml
 F:\Projects\TripGlobal\WMHT\BanDiDau\BanDiDau\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
-F:\Projects\TripGlobal\WMHT\BanDiDau\BanDiDau\obj\Debug\BanDiDau.csprojResolveAssemblyReference.cache
 F:\Projects\TripGlobal\WMHT\BanDiDau\BanDiDau\obj\Debug\BanDiDau.dll
 F:\Projects\TripGlobal\WMHT\BanDiDau\BanDiDau\obj\Debug\BanDiDau.pdb

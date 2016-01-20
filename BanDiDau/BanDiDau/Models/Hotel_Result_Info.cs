@@ -9,6 +9,7 @@ namespace BanDiDau.Models
     public class Hotel_Result_Info
     {
         public string name{get; set;}
+        public string cityCode { get; set; }
         public string address{get; set;}
         public string phone{ get; set;}
         public string fax { get; set; }
@@ -23,6 +24,7 @@ namespace BanDiDau.Models
         public string category { get; set; }
         public string cxDeadline { get; set; }
         public string urlImageRate { get; set; }
+        public string falicity { get; set; }
         public string hotelSearchCode{get; set;}
         public List<string> pictureDescription = new List<string>();
     }

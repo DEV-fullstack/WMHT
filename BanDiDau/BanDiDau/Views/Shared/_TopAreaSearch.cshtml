@@ -1,10 +1,19 @@
 ﻿<div class="tab-content">
+
     <div class="tab-pane fade in active" id="tab-1">
         <h2>Search and Save on Hotels</h2>
 
         <!--Search and Save on kHotels <form>-->
-        @using (Html.BeginForm("Hotels_Search_Results", "Hotel", FormMethod.Post))
+        @using (Html.BeginForm("Hotels_Search_Results", "Hotel",
+                    new AjaxOptions
+                    {
+                        HttpMethod = "POST",
+                        OnBegin = "onBegin",
+                        OnComplete = "OnComplete",
+                        LoadingElementId = "load"
+                    }))
         {
+
             <input type="hidden" id="cityCode" name="iCityCode" />
             <input type="hidden" id="cityName" name="strCityName" />
             <input type="hidden" id="sumAdult" name="sumAdult" />
@@ -12,167 +21,168 @@
             <input type="hidden" id="sumRoom" name="sumRoom" />
             <input type="hidden" id="ageChild1" name="ageChild1" />
             <input type="hidden" id="ageChild2" name="ageChild2" />
-                                        <div class="row">
-                                            <div class="col-md-4">
-                                                <div class="form-group form-group-lg form-group-icon-left">
-                                                    <i class="fa fa-map-marker input-icon"></i>
-                                                    <label>Where are you going?</label>
-                                                    <input class="typeahead form-control" id="search-country" name="search-country" required placeholder="City, Airport, Point of Interest or U.S. Zip Code" type="text" />
-                                                </div>
-                                            </div>
-                                            <div class="col-md-8">
-                                                <div class="input-daterange" data-date-format="M d, D">
-                                                    <div class="row">
-                                                        <div class="col-md-3">
-                                                            <div class="form-group form-group-lg form-group-icon-left">
-                                                                <i class="fa fa-calendar input-icon input-icon-highlight"></i>
-                                                                <label>Check-in</label>
-                                                                <input class="form-control" name="start" type="text" />
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-3">
-                                                            <div class="form-group form-group-lg form-group-icon-left">
-                                                                <i class="fa fa-calendar input-icon input-icon-highlight"></i>
-                                                                <label>Check-out</label>
-                                                                <input class="form-control" name="end" type="text" />
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-3">
-                                                            <div class="form-group form-group-lg form-group-icon-left">
-                                                                <i class="fa fa-flag input-icon"></i>
-                                                                <label>Hotel name</label>
-                                                                <input class="typeahead form-control" name="hotel_name" id="hotel_name" placeholder="Hotel Name" value="" onclick="remove_error();" onfocus="remove_error();" onchange="remove_error();" onblur="remove_error();" type="text" />
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-3">
-                                                            <div class="form-group form-group-lg form-group-icon-left">
-                                                                <i class="fa fa-star input-icon"></i>
-                                                                <label>Stars</label>
-                                                                <select class="form-control" name="stars">
-                                                                    <option value="">Select</option>
-                                                                    <option value="1">1</option>
-                                                                    <option value="2">1.5</option>
-                                                                    <option value="3">2</option>
-                                                                    <option value="4">2.5</option>
-                                                                    <option value="5">3</option>
-                                                                    <option value="6">3.5</option>
-                                                                    <option value="7">4</option>
-                                                                    <option value="8">4.5</option>
-                                                                    <option value="9">5</option>
-                                                                    <option value="10">5.5</option>
-                                                                    <option value="11">6</option>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group form-group-lg form-group-icon-left">
+                        <i class="fa fa-map-marker input-icon"></i>
+                        <label>Where are you going?</label>
+                        <input class="typeahead form-control" id="search-country" name="search-country" required placeholder="City, Airport, Point of Interest or U.S. Zip Code" type="text" />
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="input-daterange" data-date-format="M d, D">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-group form-group-lg form-group-icon-left">
+                                    <i class="fa fa-calendar input-icon input-icon-highlight"></i>
+                                    <label>Check-in</label>
+                                    <input class="form-control" name="start" type="text" />
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group form-group-lg form-group-icon-left">
+                                    <i class="fa fa-calendar input-icon input-icon-highlight"></i>
+                                    <label>Check-out</label>
+                                    <input class="form-control" name="end" type="text" />
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group form-group-lg form-group-icon-left">
+                                    <i class="fa fa-flag input-icon"></i>
+                                    <label>Hotel name</label>
+                                    <input class="typeahead form-control" name="hotel_name" id="hotel_name" placeholder="Hotel Name" value="" onclick="remove_error();" onfocus="remove_error();" onchange="remove_error();" onblur="remove_error();" type="text" />
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group form-group-lg form-group-icon-left">
+                                    <i class="fa fa-star input-icon"></i>
+                                    <label>Stars</label>
+                                    <select class="form-control" name="stars">
+                                        <option value="">Select</option>
+                                        <option value="1">1</option>
+                                        <option value="2">1.5</option>
+                                        <option value="3">2</option>
+                                        <option value="4">2.5</option>
+                                        <option value="5">3</option>
+                                        <option value="6">3.5</option>
+                                        <option value="7">4</option>
+                                        <option value="8">4.5</option>
+                                        <option value="9">5</option>
+                                        <option value="10">5.5</option>
+                                        <option value="11">6</option>
 
-                                                                </select>
-                                                            </div>
-                                                        </div>
+                                    </select>
+                                </div>
+                            </div>
 
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
                                     <!--DIV guests-->
-                                        <div id="roomdiv" style="border-top: 1px solid #ED8323;padding-top:5px;margin-top:-14px" class="room_container">
-                                            <div id="rooms0" style="background-color: palegoldenrod">
-                                                <div class="row">
-                                                    <div class="form-group col-md-2 col-sm-3 col-xs-12 text-center">
-                                                        <label>Room</label>
-                                                        <span class="badge" style="padding:11px 15px;border-radius:20px">1</span>
-                                                    </div>
+            <div id="roomdiv" style="border-top: 1px solid #ED8323;padding-top:5px;margin-top:-14px" class="room_container">
+                <div id="rooms0" style="background-color: palegoldenrod">
+                    <div class="row">
+                        <div class="form-group col-md-2 col-sm-3 col-xs-12 text-center">
+                            <label>Room</label>
+                            <span class="badge" style="padding:11px 15px;border-radius:20px">1</span>
+                        </div>
 
-                                                    <div class="form-group col-md-2 col-sm-3 col-xs-6">
+                        <div class="form-group col-md-2 col-sm-3 col-xs-6">
 
-                                                        <label>Adults</label>
-                                                        <div class="btn-group" data-toggle="buttons">
-                                                            <label class="btn btn-primary" style="border-top-left-radius:2px; border-bottom-left-radius:2px;" onclick="deduct_count(0)">
-                                                                <span>-</span>
-                                                            </label>
-                                                            <label class="btn button_white">
-                                                                <span id="adultCount0">2</span>
-                                                                <input type="hidden" id="adultCounth0" name="adults[]" value="2">
-                                                            </label>
-                                                            <label class="btn btn-primary" style="border-top-right-radius:2px; border-bottom-right-radius:2px;" onclick="add_count(0)">
-                                                                <span>+</span>
-                                                            </label>
-                                                        </div>
+                            <label>Adults</label>
+                            <div class="btn-group" data-toggle="buttons">
+                                <label class="btn btn-primary" style="border-top-left-radius:2px; border-bottom-left-radius:2px;" onclick="deduct_count(0)">
+                                    <span>-</span>
+                                </label>
+                                <label class="btn button_white">
+                                    <span id="adultCount0">2</span>
+                                    <input type="hidden" id="adultCounth0" name="adults[]" value="2">
+                                </label>
+                                <label class="btn btn-primary" style="border-top-right-radius:2px; border-bottom-right-radius:2px;" onclick="add_count(0)">
+                                    <span>+</span>
+                                </label>
+                            </div>
 
-                                                    </div>
-                                                    <div class="form-group col-md-2 col-sm-3 col-xs-6">
+                        </div>
+                        <div class="form-group col-md-2 col-sm-3 col-xs-6">
 
-                                                        <label>Children</label>
-                                                        <div class="btn-group" data-toggle="buttons">
-                                                            <label class="btn btn btn-primary" style="border-top-left-radius:2px; border-bottom-left-radius:2px;" onclick="deduct_child_count(0)">
-                                                                <span>-</span>
-                                                            </label>
-                                                            <label class="btn button_white">
-                                                                <span id="childCount0">0</span>
-                                                                <input type="hidden" id="childCounth0" name="childs[]" value="0">
-                                                            </label>
-                                                            <label class="btn btn btn-primary" style="border-top-right-radius:2px; border-bottom-right-radius:2px;" onclick="add_child_count(0)">
-                                                                <span>+</span>
-                                                            </label>
-                                                        </div>
-                                                    </div>
-                                                    <div id="age1_room0" class="age0 hide form-group col-md-2 col-sm-2 col-xs-6">
+                            <label>Children</label>
+                            <div class="btn-group" data-toggle="buttons">
+                                <label class="btn btn btn-primary" style="border-top-left-radius:2px; border-bottom-left-radius:2px;" onclick="deduct_child_count(0)">
+                                    <span>-</span>
+                                </label>
+                                <label class="btn button_white">
+                                    <span id="childCount0">0</span>
+                                    <input type="hidden" id="childCounth0" name="childs[]" value="0">
+                                </label>
+                                <label class="btn btn btn-primary" style="border-top-right-radius:2px; border-bottom-right-radius:2px;" onclick="add_child_count(0)">
+                                    <span>+</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div id="age1_room0" class="age0 hide form-group col-md-2 col-sm-2 col-xs-6">
 
-                                                        <label>Age</label>
-                                                        <select id="select_age1_room0 " name="age[0][]" class="form-control" onchange="($('#ageChild1').val($(this).val()))">
-                                                            <option value="0">Select</option>
-                                                            <option value="3">3</option>
-                                                            <option value="4">4</option>
-                                                            <option value="5">5</option>
-                                                            <option value="6">6</option>
-                                                            <option value="7">7</option>
-                                                            <option value="8">8</option>
-                                                            <option value="9">9</option>
-                                                            <option value="10">10</option>
-                                                        </select>
+                            <label>Age</label>
+                            <select id="select_age1_room0 " name="age[0][]" class="form-control" onchange="($('#ageChild1').val($(this).val()))">
+                                <option value="0">Select</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                                <option value="7">7</option>
+                                <option value="8">8</option>
+                                <option value="9">9</option>
+                                <option value="10">10</option>
+                            </select>
 
-                                                    </div>
-                                                    <div id="age2_room0" class="age0 hide form-group col-md-2 col-sm-2 col-xs-6">
+                        </div>
+                        <div id="age2_room0" class="age0 hide form-group col-md-2 col-sm-2 col-xs-6">
 
-                                                        <label>Age</label>
-                                                        <select id="select_age2_room0" name="age[0][]" class="form-control" onchange="($('#ageChild1').val($(this).val()))">
-                                                            <option value="0">Select</option>
-                                                            <option value="3">3</option>
-                                                            <option value="4">4</option>
-                                                            <option value="5">5</option>
-                                                            <option value="6">6</option>
-                                                            <option value="7">7</option>
-                                                            <option value="8">8</option>
-                                                            <option value="9">9</option>
-                                                            <option value="10">10</option>
-                                                        </select>
+                            <label>Age</label>
+                            <select id="select_age2_room0" name="age[0][]" class="form-control" onchange="($('#ageChild1').val($(this).val()))">
+                                <option value="0">Select</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                                <option value="7">7</option>
+                                <option value="8">8</option>
+                                <option value="9">9</option>
+                                <option value="10">10</option>
+                            </select>
 
-                                                    </div>
+                        </div>
 
-                                                    <!--<div id="extrabed_room0"  class="row extrabed_room">
+                        <!--<div id="extrabed_room0"  class="row extrabed_room">
 
-                                                        <div class="form-group col-md-4 col-sm-3 col-xs-6 pull-right">
-                                                            <label>Cots</label><br>
-                                                            <div id="period-group" class="btn-group" data-toggle="buttons">
-                                                                <label class="btn button_white">
-                                                                  <input type="radio" value="Yes" onchange="setextrabed(this.value,0)" > Yes
-                                                                </label>
-                                                                <label class="btn button_white active">
-                                                                  <input type="radio" value="No" onchange="setextrabed(this.value,0)"  checked> No
-                                                                </label>
-                                                            </div>
-                                                            <input type="hidden" id="extrabed_val_room0" name="extrabed[]" value="No">
-                                                        </div>
-                                                    </div>-->
-                                                </div>
-                                            </div>
+                            <div class="form-group col-md-4 col-sm-3 col-xs-6 pull-right">
+                                <label>Cots</label><br>
+                                <div id="period-group" class="btn-group" data-toggle="buttons">
+                                    <label class="btn button_white">
+                                      <input type="radio" value="Yes" onchange="setextrabed(this.value,0)" > Yes
+                                    </label>
+                                    <label class="btn button_white active">
+                                      <input type="radio" value="No" onchange="setextrabed(this.value,0)"  checked> No
+                                    </label>
+                                </div>
+                                <input type="hidden" id="extrabed_val_room0" name="extrabed[]" value="No">
+                            </div>
+                        </div>-->
+                    </div>
+                </div>
 
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-12" style="margin-bottom:5px">
-                                                <a id="add_link" href="javascript:void(0)" onclick="add_rooms();">Add More Rooms &nbsp;<i class="fa fa-plus"></i></a>
-                                                <a style="display: none;" id="remove_link" href="javascript:void(0)" onclick="remove_rooms();">&nbsp;&nbsp;Remove Rooms &nbsp;<i class="fa fa-minus"></i></a>
-                                            </div>
-                                        </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12" style="margin-bottom:5px">
+                    <a id="add_link" href="javascript:void(0)" onclick="add_rooms();">Add More Rooms &nbsp;<i class="fa fa-plus"></i></a>
+                    <a style="display: none;" id="remove_link" href="javascript:void(0)" onclick="remove_rooms();">&nbsp;&nbsp;Remove Rooms &nbsp;<i class="fa fa-minus"></i></a>
+                </div>
+            </div>
                                     <!--End- div guests-->
                                         <button class="btn btn-primary btn-lg" type="submit" onclick="_sumAdult_Chiuld()">Search for Hotels</button>
         }
+
         <!--End- </form> kHotel search-->
     </div>
     <div class="tab-pane fade" id="tab-2">
@@ -526,4 +536,21 @@
             <button class="btn btn-primary btn-lg" type="submit">Search for Activities</button>
         </form>
     </div>
+    <div id="loadingsearch" style="display:none">
+        @Html.Partial("_SearchLoading");
+    </div>
 </div>
+<script type="text/javascript">
+    function onBegin() {
+
+        $('#loadingsearch').show(0);
+
+    }
+    function OnComplete() {
+
+        $('#loadingsearch').show(0);
+        alert('kien');
+    }
+
+
+</script>

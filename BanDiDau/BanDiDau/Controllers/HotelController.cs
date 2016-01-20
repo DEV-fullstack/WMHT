@@ -10,7 +10,8 @@ using System.Web.Mvc;
 using System.Xml;
 using System.Xml.Linq;
 using Microsoft.Ajax.Utilities;
-
+using ColorLife.Core.Mvc;
+using System.Text.RegularExpressions;
 
 namespace BanDiDau.Controllers
 {
@@ -21,31 +22,43 @@ namespace BanDiDau.Controllers
         {
             return View();
         }
+        public ActionResult paging()
+        {
+            return View();
+        }
         #region--------Home/Hotel----------
         #region -------------Action--------
         public ActionResult Hotel()
         {
             return View();
         }
-        /// <summary>
-        /// Hotel_Details
-        /// </summary>
-        /// <param name="searchHotelCode">searchHotelCode(Ma cua khach san)</param>
-        /// <returns></returns>
-        [OutputCache(Duration = 60, VaryByParam = "id")]
-        public ActionResult Hotel_Details(string id, float? price, int? iHotelCode, DateTime? start, DateTime? end, int? sumAdult, int? sumChild, int? sumRoom, int? ageChild1, int? ageChild2,string roomType)
+        [HttpPost]
+        public JsonResult GetListByStart(List<Hotel_Result_Geo> start_3)
         {
-            //try
-            //{
-                XmlDocument soapEnvelopeXml = CreateSoapEnvelopeSearchHotelInfo(id);
-                soapEnvelopeXml = Request_Response(soapEnvelopeXml);
-                //get CDATA from strResponse
-                #region Get CDATA from Hotel-info-Method2
-                //XDocument cpo = XDocument.Load(Server.MapPath(@"kien.xml"));// load by path
-                XElement xelement = XElement.Parse(soapEnvelopeXml.InnerText);
-                List<Hotel_Result_Info> hotel_Result = new List<Hotel_Result_Info>();
-                IEnumerable<XElement> hotelInfos = xelement.Elements("Main");
-                //get Pictures tag
+            List<Hotel_Result_Geo> c = start_3;
+            return Json(start_3, JsonRequestBehavior.AllowGet);
+        }
+        /// <summary>
+        /// Get info room for action details and order action by value
+        /// </summary>
+        /// <param name="id"> id room(id cua phong)</param>
+        /// <param name="price">price(gia phong)</param>
+        /// <param name="value">value1:getall-2-getpart(1:lay tat ca- 2- lay 1 phan thong tin)</param>
+        private void GetInfo(string id, float? price, int? value)
+        {
+            List<Hotel_Result_Info> hotel_Result = new List<Hotel_Result_Info>();
+            List<Hotel_Result_PartInfo> hotel_Result_partinfo = new List<Hotel_Result_PartInfo>();
+            XmlDocument soapEnvelopeXml = CreateSoapEnvelopeSearchHotelInfo(id);
+            soapEnvelopeXml = Request_Response(soapEnvelopeXml);
+            //get CDATA from strResponse
+            #region Get CDATA from Hotel-info-Method2
+            //XDocument cpo = XDocument.Load(Server.MapPath(@"kien.xml"));// load by path
+            XElement xelement = XElement.Parse(soapEnvelopeXml.InnerText);
+            IEnumerable<XElement> hotelInfos = xelement.Elements("Main");
+            //get Pictures tag
+
+            if (value == 1)
+            {
                 IEnumerable<XElement> hotelPictures = xelement.Elements("Main").Elements("Pictures");
                 //get all tag child(<Picture>) of tag Pictures
                 IEnumerable<XElement> childHotelPictures = hotelPictures.Elements();
@@ -59,6 +72,7 @@ namespace BanDiDau.Controllers
                     hotel_Result.Add(new Hotel_Result_Info
                     {
                         name = hotel.Element("HotelName") == null ? "" : hotel.Element("HotelName").Value,
+                        cityCode = hotel.Element("CityCode") == null ? "" : hotel.Element("CityCode").Value,
                         address = hotel.Element("Address").Value,
                         fax = hotel.Element("Fax").Value,
                         phone = hotel.Element("Phone").Value,
@@ -69,47 +83,74 @@ namespace BanDiDau.Controllers
                         reviewCount = hotel.Element("TripAdvisor").Element("ReviewCount").Value != "" ? int.Parse(hotel.Element("TripAdvisor").Element("ReviewCount").Value) : 0,
                         urlImageRate = hotel.Element("TripAdvisor").Element("RatingImage").Value != "" ? (hotel.Element("TripAdvisor").Element("RatingImage").Value) : @"~\Content\img\trip_rating_none.png",
                         rate = hotel.Element("TripAdvisor").Element("Rating").Value != "" ? float.Parse(hotel.Element("TripAdvisor").Element("Rating").Value) : 0,
-                        //location = hotel.Element("Location").Value,
-                        //currency = hotel.Element("Currency").Value,
-                        //cxDeadline = hotel.Element("CxlDeadline").Value != "" ? hotel.Element("CxlDeadline").Value : "",
-                        //reviewCount = hotel.Element("TripAdvisor").Element("ReviewCount").Value != "" ? int.Parse(hotel.Element("TripAdvisor").Element("ReviewCount").Value) : 0,
-                        //urlImageRate = hotel.Element("TripAdvisor").Element("RatingImage").Value != "" ? (hotel.Element("TripAdvisor").Element("RatingImage").Value) : "",
-                        //rate = hotel.Element("TripAdvisor").Element("Rating").Value != "" ? float.Parse(hotel.Element("TripAdvisor").Element("Rating").Value) : 0,
 
                     });
 
                 }
                 #endregion
                 ViewBag.hotel_Info_Result = hotel_Result;//partial:_BookingItemHeader 
-                //method get all room of hotel
-                XmlDocument soapEnvelopeXml2 = CreateSoapEnvelopeHotelSearchGeo_Id(0, iHotelCode, start, end, sumAdult, sumChild, sumRoom, ageChild1, ageChild2);
-                List<Hotel_Result_Geo> hotel_Result_Geo = hotelGeo(soapEnvelopeXml2);
-                ViewBag.hotel_listRoom_Result = hotel_Result_Geo;
-                ViewBag.hotel_listRoom_Result_Meta = hotel_Result_Geo.Where(Code => Code.price ==price).ToList();//partial:_BookingItemHeader booking-item-meta">
-                string strDayStart = (start != null ? start.Value.ToShortDateString() : DateTime.Now.ToString("yyyy-MM-dd"));
-                string strDayEnd = (end != null ? end.Value.ToShortDateString() : DateTime.Now.AddDays(1).ToString("yyyy-MM-dd"));
-                int iNights = end.Value.Day - start.Value.Day;
-                ViewBag.end = strDayEnd;
-                ViewBag.start = strDayStart;
-                ViewBag.sumAdult = sumAdult;
-                ViewBag.sumChild = sumChild;
-                ViewBag.sumRoom = sumRoom;
-                ViewBag.ageChild1 = ageChild1;
-                ViewBag.ageChild2 = ageChild2;
-                ViewBag.nights = iNights;
-                ViewBag.roomType = roomType;
-                if (Request.IsAjaxRequest())
+            }
+            else
+            {
+                foreach (var hotel in hotelInfos)
                 {
-                    return PartialView("_BookingItemHeader", ViewBag.hotel_Info_Result);
+                    hotel_Result_partinfo.Add(new Hotel_Result_PartInfo
+                    {
+                        //falicity = hotel.Element("RoomFacilities") == null ? "" : hotel.Element("RoomFacilities").Value, //fix cung 
+                        falicity = hotel.Element("RoomFacilities") == null ? "" : "Wifi, Television,Breakfast,Roll In Shower", //fix cung 
+
+                    });
+
                 }
-                return View();
+                ViewBag.RoomFacilities = hotel_Result_partinfo;// 
+            }
+        }
+        /// <summary>
+        /// Hotel_Details
+        /// </summary>
+        /// <param name="searchHotelCode">searchHotelCode(Ma cua khach san)</param>
+        /// <returns></returns>
+        [OutputCache(Duration = 60, VaryByParam = "id")]
+        public ActionResult Hotel_Details(string id, float? price, int? iHotelCode, string hotelName, DateTime? start, DateTime? end, int? sumAdult, int? sumChild, int? sumRoom, int? ageChild1, int? ageChild2, string roomType)
+        {
+            //try
+            //{
+            GetInfo(id, price, 1);
+            //method get all room of hotel
+            XmlDocument soapEnvelopeXml2 = CreateSoapEnvelopeHotelSearchGeo_Id(0, iHotelCode, hotelName, start, end, sumAdult, sumChild, sumRoom, ageChild1, ageChild2);
+            List<Hotel_Result_Geo> hotel_Result_Geo = hotelGeo(soapEnvelopeXml2);
+            ViewBag.hotel_listRoom_Result = hotel_Result_Geo;
+            // ViewBag.hotel_listRoom_Result_Meta = hotel_Result_Geo.Where(Code => Code.price == price).ToList();//partial:_BookingItemHeader booking-item-meta">
+            string strDayStart = (start != null ? start.Value.ToShortDateString() : DateTime.Now.ToString("yyyy-MM-dd"));
+            string strDayEnd = (end != null ? end.Value.ToShortDateString() : DateTime.Now.AddDays(1).ToString("yyyy-MM-dd"));
+            int iNights = end.Value.Day - start.Value.Day;
+            ViewBag.end = strDayEnd;
+            ViewBag.start = strDayStart;
+            ViewBag.sumAdult = sumAdult;
+            ViewBag.sumChild = sumChild;
+            ViewBag.sumRoom = sumRoom;
+            ViewBag.ageChild1 = ageChild1;
+            ViewBag.ageChild2 = ageChild2;
+            ViewBag.nights = iNights;
+            ViewBag.roomType = roomType;
+            return View();
             //}
             //catch (Exception)
             //{
 
-              
+
             //}
 
+
+        }
+        public ActionResult Room_Details(string id, float? price, int? iHotelCode, string hotelName, DateTime? start, DateTime? end, int? sumAdult, int? sumChild, int? sumRoom, int? ageChild1, int? ageChild2, string roomType)
+        {
+            //try
+            //{
+            GetInfo(id, price, 1);
+            if (Request.IsAjaxRequest())
+                return PartialView("_BookingItemHeader");
+            return View();
 
         }
         public ActionResult Hotel_Payment()
@@ -120,7 +161,7 @@ namespace BanDiDau.Controllers
         {
             return View();
         }
-        public ActionResult Hotel_Payment_Unregistered(int? iPrice,string strName, string dtStart,string dtEnd, int iNights, string roomType)
+        public ActionResult Hotel_Payment_Unregistered(int? iPrice, string strName, string dtStart, string dtEnd, int iNights, string roomType)
         {
             ViewBag.dtEnd = dtEnd;
             ViewBag.iPrice = iPrice;
@@ -162,42 +203,78 @@ namespace BanDiDau.Controllers
         /// <param name="ageChild2"> Age-Child2(So tuoi tre thu hai)</param>
         /// <returns></returns>
         //[OutputCache(Duration = 600, VaryByParam = "iCityCode;starts;ends;sumAdult;sumChild;sumRoom;ageChild1;ageChild2")]
-        public ActionResult Hotels_Search_Results(int? iCityCode, string strCityName, int? iHotelCode, DateTime? start, DateTime? end, int? sumAdult, int? sumChild, int? sumRoom, int? ageChild1, int? ageChild2)
+        public ActionResult Hotels_Search_Results(int? iCityCode, string strCityName, int? iHotelCode, string hotelName, DateTime? start, DateTime? end, int? sumAdult, int? sumChild, int? sumRoom, int? ageChild1, int? ageChild2, int? page, int? pageSize)
+        {
+            string exs;
+            try
+            {
+                XmlDocument soapEnvelopeXml = CreateSoapEnvelopeHotelSearchGeo_Id(iCityCode, iHotelCode, hotelName, start, end, sumAdult, sumChild, sumRoom, ageChild1, ageChild2);
+                List<Hotel_Result_Geo> hotel_Result_Geo = hotelGeo(soapEnvelopeXml);
+                // ViewBag.hotel_ResultAll = hotel_Result_Geo.DistinctBy(a => a.hotelCode).Take(5);
+                ViewBag.hotel_ResultAll = hotel_Result_Geo;
+
+                //int pageNumber = (page ?? 1);
+                //int pageSize2 = (pageSize ?? 5);
+                #region // thanh phan phu
+                ViewBag.hotel_Count = hotel_Result_Geo.DistinctBy(a => a.hotelCode).Count();
+                List<Hotel_Result_Geo> hotel_Result_Geo_Category = hotel_Result_Geo.DistinctBy(a => a.hotelCode).ToList();
+                ViewBag.hotel_Category5_Count = hotel_Result_Geo_Category.Where(a => a.category == "5"); ;// so sao khach san -> cai tien sau
+                ViewBag.hotel_Category4_Count = hotel_Result_Geo_Category.Where(a => a.category == "4");
+                ViewBag.hotel_Category3_Count = hotel_Result_Geo_Category.Where(a => a.category == "3");
+                ViewBag.hotel_Category2_Count = hotel_Result_Geo_Category.Where(a => a.category == "2");
+                ViewBag.hotel_Category1_Count = hotel_Result_Geo_Category.Where(a => a.category == "1");
+                string strDayStart = (start != null ? start.Value.ToString("yyyy-MM-dd") : DateTime.Now.ToString("yyyy-MM-dd"));
+                string strDayEnd = (end != null ? end.Value.ToString("yyyy-MM-dd") : DateTime.Now.AddDays(1).ToString("yyyy-MM-dd"));
+                ViewBag.start = strDayStart;
+                ViewBag.end = strDayEnd;
+                ViewBag.sumAdult = sumAdult;
+                ViewBag.sumChild = (sumChild > 0 ? sumChild.ToString() + " child" : "");
+                ViewBag.sumRoom = sumRoom;
+                ViewBag.ageChild1 = ageChild1;
+                ViewBag.ageChild2 = ageChild2;
+                ViewBag.cityName = strCityName.ToLowerInvariant();
+                #endregion
+                //var model = hotel_Result_Geo.ToList().ToPagedList(pageNumber, pageSize2);
+                //if (Request.IsAjaxRequest())
+                //    return PartialView("_BookingList", model);
+                //return View(model);
+                return View();
+            }
+            catch (Exception ex)
+            {
+                exs = ex.Message;
+                return RedirectToAction("Index", "Home");
+            }
+
+        }
+        public ActionResult Hotels_ChangeSearch_Results(int? iCityCodeCS, string strCityName, int? iHotelCode, string hotelNameCS, DateTime? start, DateTime? end, int? sumAdultCS, int? sumChildCS, int? sumRoomCS, int? ageChild1CS, int? ageChild2CS)
         {
             string exs;
             //try
             //{
-            XmlDocument soapEnvelopeXml = CreateSoapEnvelopeHotelSearchGeo_Id(iCityCode, iHotelCode, start, end, sumAdult, sumChild, sumRoom, ageChild1, ageChild2);
+            XmlDocument soapEnvelopeXml = CreateSoapEnvelopeHotelSearchGeo_Id(iCityCodeCS, 0, hotelNameCS, start, end, sumAdultCS, sumChildCS, sumRoomCS, ageChild1CS, ageChild2CS);
             List<Hotel_Result_Geo> hotel_Result_Geo = hotelGeo(soapEnvelopeXml);
-            ViewBag.hotel_ResultAll = hotel_Result_Geo.DistinctBy(a => a.hotelCode);
-            ViewBag.hotel_Count = hotel_Result_Geo.DistinctBy(a => a.hotelCode).Count();
-            List<Hotel_Result_Geo> hotel_Result_Geo_Category = hotel_Result_Geo.DistinctBy(a => a.hotelCode).ToList();
-            ViewBag.hotel_Category5_Count = hotel_Result_Geo_Category.Where(a => a.category == "5"); ;// so sao khach san -> cai tien sau
-            ViewBag.hotel_Category4_Count = hotel_Result_Geo_Category.Where(a => a.category == "4");
-            ViewBag.hotel_Category3_Count = hotel_Result_Geo_Category.Where(a => a.category == "3");
-            ViewBag.hotel_Category2_Count = hotel_Result_Geo_Category.Where(a => a.category == "2");
-            ViewBag.hotel_Category1_Count = hotel_Result_Geo_Category.Where(a => a.category == "1");
-            string strDayStart = (start != null ? start.Value.ToString("yyyy-MM-dd") : DateTime.Now.ToString("yyyy-MM-dd"));
-            string strDayEnd = (end != null ? end.Value.ToString("yyyy-MM-dd") : DateTime.Now.AddDays(1).ToString("yyyy-MM-dd"));
-            ViewBag.start = strDayStart;
-            ViewBag.end = strDayEnd;
-            ViewBag.sumAdult = sumAdult;
-            ViewBag.sumChild = (sumChild>0?sumChild.ToString()+ " child" : "");
-            ViewBag.sumRoom = sumRoom;
-            ViewBag.ageChild1 = ageChild1;
-            ViewBag.ageChild2 = ageChild2;
-            ViewBag.cityName = strCityName.ToLowerInvariant();
-            return View();
-            //}
-            //catch (Exception ex)
-            //{
-            //    exs = ex.Message;
-            //    return RedirectToAction("Index", "Home");
-            //}
+            // ViewBag.hotel_ResultAll = hotel_Result_Geo.DistinctBy(a => a.hotelCode).Take(5);
+            var error = hotel_Result_Geo.Select(a => a.errorSearch == "No Hotels Were Found Matching Searched Criteria!");
 
+            ViewBag.hotel_listRoom_Result = hotel_Result_Geo;
+            if (Request.IsAjaxRequest())
+            {
+                if (error.Count() < 0)
+                {
+                    return PartialView("_RoomList");
+                }
+                else
+                {
+                    return PartialView("_Error");
+                }
+            }
+
+            return View();
         }
         #endregion
         #region -----------Medthods--------
+
         /// <summary>
         /// Header_Request
         /// </summary>
@@ -300,8 +377,8 @@ namespace BanDiDau.Controllers
 		<SortOrder>0</SortOrder>
 		<FilterPriceMin>0</FilterPriceMin>
 		<FilterPriceMax>10000</FilterPriceMax>
-		<MaximumWaitTime>30</MaximumWaitTime>
-		<MaxResponses>1000</MaxResponses>
+		<MaximumWaitTime>5</MaximumWaitTime>
+		<MaxResponses>10</MaxResponses>
 		<FilterRoomBasises>
 			<FilterRoomBasis></FilterRoomBasis>
 		</FilterRoomBasises>
@@ -324,7 +401,7 @@ namespace BanDiDau.Controllers
             soapEnvelop.LoadXml(xml);
             return soapEnvelop;
         }
-        private static XmlDocument CreateSoapEnvelopeHotelSearchGeo_Id(int? iCityCode, int? iHotelCode, DateTime? starts, DateTime? ends, int? sumAdult, int? sumChild, int? sumRoom, int? ageChild1, int? ageChild2)
+        private static XmlDocument CreateSoapEnvelopeHotelSearchGeo_Id(int? iCityCode, int? iHotelCode, string hotelName, DateTime? starts, DateTime? ends, int? sumAdult, int? sumChild, int? sumRoom, int? ageChild1, int? ageChild2)
         {
             string strDayStart = (starts != null ? starts.Value.ToString("yyyy-MM-dd") : DateTime.Now.ToString("yyyy-MM-dd"));
             string strDayEnd = (ends != null ? ends.Value.ToString("yyyy-MM-dd") : DateTime.Now.AddDays(1).ToString("yyyy-MM-dd"));
@@ -349,17 +426,22 @@ namespace BanDiDau.Controllers
                 strCityCode =
                    @" <CityCode>" + iCityCode + @"</CityCode>";
             }
+            if (hotelName != "")
+            {
+                hotelName = " <HotelName>" + hotelName + "</HotelName>";
+            }
             string xml = xmlHeader + @"
 	        <Main>
 		        <SortOrder>1</SortOrder>
 		        <FilterPriceMin>0</FilterPriceMin>
 		        <FilterPriceMax>10000</FilterPriceMax>
-		        <MaximumWaitTime>30</MaximumWaitTime>
+		        <MaximumWaitTime>5</MaximumWaitTime>
 		        <MaxResponses>10</MaxResponses>
 		        <FilterRoomBasises>
 			    <FilterRoomBasis></FilterRoomBasis>
-		        </FilterRoomBasises>
-                <Apartments>false</Apartments>" +
+		        </FilterRoomBasises>" +
+                hotelName +
+                "<Apartments>false</Apartments>" +
                 strHotelCode +
                 strCityCode + @"
 		        <ArrivalDate>" + strDayStart + @"</ArrivalDate>
@@ -374,17 +456,21 @@ namespace BanDiDau.Controllers
             </MakeRequest>
            </soap:Body>
            </soap:Envelope>";
-            if (ageChild1 > 2 || ageChild2 > 2)
+            if (sumChild > 0)
             {
-                if (ageChild2 < 2)
+                if (ageChild1 > 2 || ageChild2 > 2)
                 {
-                    xml += "<ChildAge > " + ageChild1 + @" </ChildAge >" + xmlEnd;
-                }
-                else
-                {
-                    xml = xml + @"<ChildAge >" + ageChild1 + @"</ChildAge ><ChildAge >" + ageChild2 + @" </ChildAge >" + xmlEnd;
+                    if (ageChild2 < 2)
+                    {
+                        xml += "<ChildAge > " + ageChild1 + @" </ChildAge >" + xmlEnd;
+                    }
+                    else
+                    {
+                        xml = xml + @"<ChildAge >" + ageChild1 + @"</ChildAge ><ChildAge >" + ageChild2 + @" </ChildAge >" + xmlEnd;
+                    }
                 }
             }
+
             else
             {
                 xml += xmlEnd;
@@ -393,6 +479,33 @@ namespace BanDiDau.Controllers
             soapEnvelop.LoadXml(xml);
             return soapEnvelop;
         }
+        #region get rom facility, hotel facility
+        private string RoomFacility(string id)
+        {
+
+            XmlDocument soapEnvelopeXmlFacility = CreateSoapEnvelopeSearchHotelInfo(id);
+            soapEnvelopeXmlFacility = Request_Response(soapEnvelopeXmlFacility);
+
+            //XDocument cpo = XDocument.Load(Server.MapPath(@"kien.xml"));// load by path
+            XElement xelement = XElement.Parse(soapEnvelopeXmlFacility.InnerText);
+            string str1 =
+            xelement.Descendants("RoomFacilities")
+                .Select(s => s.Value)
+                .Aggregate(
+                new StringBuilder(),
+                (s, i) => s.Append(i),
+                s => s.ToString()
+                );
+            //string hotelInfos = xelement.e("Main").Elements("RoomFacilities");
+            //string falicity = hotelInfos.Element("RoomFacilities") == null ? "" : hotelInfos.Element("RoomFacilities").Value;
+            string value = "cat\r\ndog\r\nanimal\r\nperson";
+            // Split the string on line breaks.
+            // ... The return value from Split is a string array.
+            string[] lines = Regex.Split(value, "\r\n");
+
+            return str1;
+        }
+        #endregion
         private List<Hotel_Result_Geo> hotelGeo(XmlDocument soapEnvelopeXml)
         {
 
@@ -414,39 +527,52 @@ namespace BanDiDau.Controllers
             XElement xelement = XElement.Parse(soapEnvelopeXml.InnerText);
             XElement po = xelement.Element("Main");
             List<Hotel_Result_Geo> hotel_Result = new List<Hotel_Result_Geo>();
+            List<ErrorHotel> errorHotel = new List<ErrorHotel>();
             IEnumerable<XElement> hotels = po.Elements();
+
             try
             {
 
-           
-            foreach (var hotel in hotels)
-            {
-                hotel_Result.Add(new Hotel_Result_Geo
-                {
-                    name = hotel.Element("HotelName") == null ? "" : hotel.Element("HotelName").Value,
-                    hotelSearchCode = hotel.Element("HotelSearchCode").Value,
-                    // cityCode= int.Parse(hotel.Element("CityCode").Value),
-                    hotelCode = int.Parse(hotel.Element("HotelCode").Value),
-                    thumbnail = hotel.Element("Thumbnail").Value,
-                    description = hotel.Element("Description") == null ? "" : hotel.Element("Description").Value,
-                    price = float.Parse(hotel.Element("TotalPrice").Value),
-                    category = (hotel.Element("Category").Value),
-                    location = hotel.Element("Location").Value,
-                    roomType = hotel.Element("RoomType").Value,
-                    currency = hotel.Element("Currency").Value,
-                    cxDeadline = hotel.Element("CxlDeadline").Value != "" ? hotel.Element("CxlDeadline").Value : "",
-                    reviewCount = hotel.Element("TripAdvisor").Element("ReviewCount").Value != "" ? int.Parse(hotel.Element("TripAdvisor").Element("ReviewCount").Value) : 0,
-                    urlImageRate = hotel.Element("TripAdvisor").Element("RatingImage").Value != "" ? (hotel.Element("TripAdvisor").Element("RatingImage").Value) : @"~\Content\img\trip_rating_none.png",
-                    rate = hotel.Element("TripAdvisor").Element("Rating").Value != "" ? float.Parse(hotel.Element("TripAdvisor").Element("Rating").Value) : 0,
 
-                });
-                   
+                foreach (var hotel in hotels)
+                {
+                    hotel_Result.Add(new Hotel_Result_Geo
+                    {
+                        name = hotel.Element("HotelName") == null ? "" : hotel.Element("HotelName").Value,
+                        hotelSearchCode = hotel.Element("HotelSearchCode").Value,
+                        // roomFacility = RoomFacility(hotel.Element("HotelSearchCode").Value), // get facility room
+                        // cityCode= int.Parse(hotel.Element("CityCode").Value),
+                        hotelCode = int.Parse(hotel.Element("HotelCode").Value),
+                        thumbnail = hotel.Element("Thumbnail").Value,
+                        description = hotel.Element("Description") == null ? "" : hotel.Element("Description").Value,
+                        price = float.Parse(hotel.Element("TotalPrice").Value),
+                        category = (hotel.Element("Category").Value),
+                        location = hotel.Element("Location").Value,
+                        roomType = hotel.Element("RoomType").Value,
+                        roomBasis = hotel.Element("RoomBasis").Value,
+                        currency = hotel.Element("Currency").Value,
+                        cxDeadline = hotel.Element("CxlDeadline").Value != "" ? hotel.Element("CxlDeadline").Value : "",
+                        reviewCount = hotel.Element("TripAdvisor").Element("ReviewCount").Value != "" ? int.Parse(hotel.Element("TripAdvisor").Element("ReviewCount").Value) : 0,
+                        urlImageRate = hotel.Element("TripAdvisor").Element("RatingImage").Value != "" ? (hotel.Element("TripAdvisor").Element("RatingImage").Value) : @"~\Content\img\trip_rating_none.png",
+                        rate = hotel.Element("TripAdvisor").Element("Rating").Value != "" ? float.Parse(hotel.Element("TripAdvisor").Element("Rating").Value) : 0,
+
+                    });
+                    //GetInfo(hotel.Element("HotelSearchCode").Value, float.Parse(hotel.Element("TotalPrice").Value), 2);
                 }
             }
             catch (Exception)
             {
 
-                throw;
+                foreach (var hotel in hotels)
+                {
+                    hotel_Result.Add(new Hotel_Result_Geo
+                    {
+                        errorSearch = hotel.FirstNode.Parent.Value,
+
+                    });
+                    //GetInfo(hotel.Element("HotelSearchCode").Value, float.Parse(hotel.Element("TotalPrice").Value), 2);
+                }
+
             }
             return hotel_Result;
         }

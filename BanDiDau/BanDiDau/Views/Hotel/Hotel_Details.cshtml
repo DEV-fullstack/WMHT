@@ -9,6 +9,7 @@
         function doSubmit(obj) {
             $(obj).submit();
         }
+       
     </script>
 </head>
 
@@ -34,92 +35,55 @@
         </ul>
 
         <div class="booking-item-details">
-            <div id="dvAjaxData">
+            <div id="dvAjaxRoomDetails">
                 @Html.Partial("_BookingItemHeader")
             </div>
             <div class="gap gap-small"></div>
             <h3>Available Rooms</h3>
             <div class="row">
-                <div class="col-md-9">
-                    <ul class="booking-list">
-                        @foreach(var room in ViewBag.hotel_listRoom_Result)
-                        {
-                        <li>
-                            @using (Ajax.BeginForm("Hotel_Details",
-                            new AjaxOptions
-                            {
-                            HttpMethod = "GET",
-                            InsertionMode = InsertionMode.Replace,
-                            UpdateTargetId = "dvAjaxData",
-                            }))
-                            {
-                            <a class="booking-item" href="/hotel-details?id=@room.hotelSearchCode&price=@room.price&iHotelCode=@room.hotelCode&start=@ViewBag.start&end=@ViewBag.end&sumAdult=@ViewBag.sumAdult&sumChild=@ViewBag.sumChild&sumRoom=@ViewBag.sumRoom&ageChild1=@ViewBag.ageChild1&ageChild2=@ViewBag.ageChild2">
-                                <div class="row">
-                                    <div class="col-md-3">
-                                        <img src="@room.thumbnail" alt="Image Alternative text" title="LHOTEL PORTO BAY SAO PAULO lobby">
-                                    </div>
-                                    <div class="col-md-6">
-                                        <h5 class="booking-item-title">@room.roomType</h5>
-                                        <p class="text-small">@room.description</p>
-                                        <ul class="booking-item-features booking-item-features-sign clearfix">
-                                            <li rel="tooltip" data-placement="top" title="" data-original-title="Adults Occupancy">
-                                                <i class="fa fa-male"></i><span class="booking-item-feature-sign">x 2</span>
-                                            </li>
-                                            <li rel="tooltip" data-placement="top" title="" data-original-title="Beds">
-                                                <i class="im im-bed"></i><span class="booking-item-feature-sign">x 1</span>
-                                            </li>
-                                            <li rel="tooltip" data-placement="top" title="" data-original-title="Room footage (square feet)">
-                                                <i class="im im-width"></i><span class="booking-item-feature-sign">470</span>
-                                            </li>
-                                        </ul>
-                                        <ul class="booking-item-features booking-item-features-small clearfix">
-                                            <li rel="tooltip" data-placement="top" title="" data-original-title="Air Conditioning">
-                                                <i class="im im-air"></i>
-                                            </li>
-                                            <li rel="tooltip" data-placement="top" title="" data-original-title="Flat Screen TV">
-                                                <i class="im im-tv"></i>
-                                            </li>
-                                            <li rel="tooltip" data-placement="top" title="" data-original-title="Mini Bar">
-                                                <i class="im im-bar"></i>
-                                            </li>
-                                            <li rel="tooltip" data-placement="top" title="" data-original-title="Bathtub">
-                                                <i class="im im-bathtub"></i>
-                                            </li>
-                                            <li rel="tooltip" data-placement="top" title="" data-original-title="Kitchen">
-                                                <i class="im im-kitchen"></i>
-                                            </li>
-                                            <li rel="tooltip" data-placement="top" title="" data-original-title="Patio">
-                                                <i class="im im-patio"></i>
-                                            </li>
-                                            <li rel="tooltip" data-placement="top" title="" data-original-title="Soundproof">
-                                                <i class="im im-soundproof"></i>
-                                            </li>
-                                            <li rel="tooltip" data-placement="top" title="" data-original-title="SPA tub">
-                                                <i class="im im-spa"></i>
-                                            </li>
-                                            <li rel="tooltip" data-placement="top" title="" data-original-title="Terrace">
-                                                <i class="im im-terrace"></i>
-                                            </li>
-                                            <li rel="tooltip" data-placement="top" title="" data-original-title="Washing Machine">
-                                                <i class="im im-washing-machine"></i>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <div class="col-md-3" style="padding-left: 0;">
-                                        <span class="booking-item-price">@room.price</span><span>/night</span>
-                                        <span class="btn btn-primary" style="margin-left: 9px;margin-top: -18px;">Book</span>
-                                    </div>
-                                </div>
-                            </a>
-                            }
-                        </li>
-
-                        }
-                    </ul>
+                <div class="col-md-9" id="dvajaxRomList">
+                    @Html.Partial("_RoomList")
                 </div>
+                @*<div class="mfp-with-anim mfp-dialog mfp-search-dialog mfp-hide" id="search-dialog" style="max-width:1000px">
+                    @Html.Partial("_TopAreaSearchPart")
+                </div>*@
+                @*<div class="col-md-3" id="dvsearchchange">
+                    <div class="booking-item-dates-change">
+                        <h3 class="booking-title" style="margin-left:35px">
+                            <small style="font-size:22px"><a class="popup-text" href="#search-dialog" data-effect="mfp-zoom-out" style="font-size:22px">Change search</a></small>
+                        </h3>
+                      
+                    </div>
+                </div>*@
                 <div class="col-md-3">
                     <div class="booking-item-dates-change">
-                        <form>
+                       
+                      @using (Ajax.BeginForm("Hotels_ChangeSearch_Results",
+                      new AjaxOptions
+                      {
+                          HttpMethod = "GET",
+                          InsertionMode = InsertionMode.Replace,
+                          //OnBegin = "onBegin",
+                          //OnComplete = "onComplete",
+                          //OnSuccess = "onSuccess",
+                          UpdateTargetId = "dvajaxRomList",
+                          LoadingElementId = "loading",
+
+                      }))
+                      {
+                          <div>
+                              <input type="hidden" id="sumAdultcs" name="sumAdultCS" value="1" />
+                              <input type="hidden" id="sumChildcs" name="sumChildCS" value="0" />
+                              <input type="hidden" id="sumRoomcs" name="sumRoomCS" value="1" />
+                              <input type="hidden" id="ageChild1cs" name="ageChild1CS" value="3"/>
+                              <input type="hidden" id="ageChild2cs" name="ageChild1CS"value="3" />
+                            @foreach (var item in ViewBag.hotel_Info_Result)
+                            {
+                                <input type="hidden" id="iCityCodecs" name="iCityCodecs" value="@item.cityCode"/>
+                                <input type="hidden" id="hotelNamecs" name="hotelNamecs" value="@item.name" />
+                            }
+                          </div>
+
                             <div class="input-daterange" data-date-format="MM d, DD">
                                 <div class="form-group form-group-icon-left">
                                     <i class="fa fa-calendar input-icon input-icon-hightlight"></i>
@@ -132,26 +96,32 @@
                                     <input class="form-control" name="end" type="text">
                                 </div>
                             </div>
-                            <div class="form-group form-group-select-plus">
+                            <div class="adult form-group form-group-select-plus">
                                 <label>Adults</label>
                                 <div class="btn-group btn-group-select-num" data-toggle="buttons">
                                     <label class="btn btn-primary active">
-                                        <input type="radio" name="options">1
+                                        <input type="radio"  id="sumAdult" name="sumAdultradio" value="1">1
                                     </label>
                                     <label class="btn btn-primary">
-                                        <input type="radio" name="options">2
+                                        <input type="radio" name="sumAdultradio" value="2">2
                                     </label>
                                     <label class="btn btn-primary">
-                                        <input type="radio" name="options">3
+                                        <input type="radio" name="sumAdultradio"value="3">3
                                     </label>
                                     <label class="btn btn-primary">
-                                        <input type="radio" name="options">4
+                                        <input type="radio" name="sumAdultradio"value="4">4
                                     </label>
                                     <label class="btn btn-primary">
-                                        <input type="radio" name="options">5
+                                        <input type="radio" name="sumAdultradio"value="5">5
                                     </label>
                                     <label class="btn btn-primary">
-                                        <input type="radio" name="options">5+
+                                        <input type="radio" name="sumAdultradio"value="6">6
+                                    </label>
+                                    <label class="btn btn-primary">
+                                        <input type="radio" name="sumAdultradio"value="7">7
+                                    </label>
+                                    <label class="btn btn-primary">
+                                        <input type="radio" name="sumAdultradio"value="8">8
                                     </label>
                                 </div>
                                 <select class="form-control hidden">
@@ -164,100 +134,84 @@
                                     <option>7</option>
                                     <option>8</option>
                                     <option>9</option>
-                                    <option>10</option>
-                                    <option>11</option>
-                                    <option>12</option>
-                                    <option>13</option>
-                                    <option>14</option>
+                                   
                                 </select>
                             </div>
-                            <div class="form-group form-group-select-plus">
+                            <div class="child form-group form-group-select-plus">
                                 <label>Children</label>
                                 <div class="btn-group btn-group-select-num" data-toggle="buttons">
                                     <label class="btn btn-primary active">
-                                        <input type="radio" name="options">0
+                                        <input type="radio" name="sumChildradio"value="0">0
                                     </label>
                                     <label class="btn btn-primary">
-                                        <input type="radio" name="options">1
+                                        <input type="radio" name="sumChildradio"value="1">1
                                     </label>
                                     <label class="btn btn-primary">
-                                        <input type="radio" name="options">2
+                                        <input type="radio" name="sumChildradio"value="2">2
                                     </label>
                                     <label class="btn btn-primary">
-                                        <input type="radio" name="options">3
+                                        <input type="radio" name="sumChildradio"value="3">3
                                     </label>
                                     <label class="btn btn-primary">
-                                        <input type="radio" name="options">4
+                                        <input type="radio" name="sumChildradio"value="4">4
                                     </label>
                                     <label class="btn btn-primary">
-                                        <input type="radio" name="options">4+
+                                        <input type="radio" name="sumChildradio"value="5">5
                                     </label>
+                                    <label class="btn btn-primary">
+                                        <input type="radio" name="sumChildradio"value="6">6
+                                    </label>
+                                 
                                 </div>
                                 <select class="form-control hidden">
                                     <option>0</option>
                                     <option>1</option>
                                     <option>2</option>
                                     <option>3</option>
-                                    <option>4</option>
-                                    <option selected="selected">5</option>
+                                    <option selected="selected">4</option>
+                                    <option>5</option>
                                     <option>6</option>
-                                    <option>7</option>
-                                    <option>8</option>
-                                    <option>9</option>
-                                    <option>10</option>
-                                    <option>11</option>
-                                    <option>12</option>
-                                    <option>13</option>
-                                    <option>14</option>
                                 </select>
                             </div>
-                            <div class="form-group form-group-select-plus">
+                            <div class="room form-group form-group-select-plus">
                                 <label>Rooms</label>
                                 <div class="btn-group btn-group-select-num" data-toggle="buttons">
                                     <label class="btn btn-primary active">
-                                        <input type="radio" name="options">1
+                                        <input type="radio" name="sumRoomradio"value="1">1
                                     </label>
                                     <label class="btn btn-primary">
-                                        <input type="radio" name="options">2
+                                        <input type="radio" name="sumRoomradio"value="2">2
                                     </label>
                                     <label class="btn btn-primary">
-                                        <input type="radio" name="options">3
+                                        <input type="radio" name="sumRoomradio"value="3">3
                                     </label>
-                                    <label class="btn btn-primary">
-                                        <input type="radio" name="options">4
-                                    </label>
-                                    <label class="btn btn-primary">
-                                        <input type="radio" name="options">5
-                                    </label>
-                                    <label class="btn btn-primary">
-                                        <input type="radio" name="options">5+
-                                    </label>
+                                    
                                 </div>
-                                <select class="form-control hidden">
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                    <option>4</option>
-                                    <option>5</option>
-                                    <option selected="selected">6</option>
-                                    <option>7</option>
-                                    <option>8</option>
-                                    <option>9</option>
-                                    <option>10</option>
-                                    <option>11</option>
-                                    <option>12</option>
-                                    <option>13</option>
-                                    <option>14</option>
-                                </select>
                             </div>
-                        </form>
+                            <button class="btn btn-primary btn-lg" type="submit">Search for Hotels</button>
+                      }
                     </div>
                 </div>
-
             </div>
         </div>
 
         <div class="gap gap-small"></div>
     </div>
+    <script>
+        $('.adult input').on('change', function () {
+            var sumAdult = $('input[name=sumAdultradio]:checked', '.adult').val();
+            $('#sumAdultcs').val(sumAdult);
+        });
+        $('.child input').on('change', function () {
+            var sumChild = $('input[name=sumChildradio]:checked', '.child').val();
+            $('#sumChildcs').val(sumChild);
+            
+        });
+        $('.room input').on('change', function () {
+            var sumRoom = $('input[name=sumRoomradio]:checked', '.room').val();
+            $('#sumRoomcs').val(sumRoom);
+        });
+    </script>
 </body>
+
 </html>

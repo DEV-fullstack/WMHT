@@ -23,6 +23,10 @@ namespace BanDiDau.Models
         public int cityCode { get; set; }
         public string thumbnail { get; set; }
         public string roomType { get; set; }
+        public string roomFacility { get; set; }
+        public string roomBasis { get; set; }
+        public string errorSearch { get; set; }
+
 
     }
 }
